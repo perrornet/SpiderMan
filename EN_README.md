@@ -65,7 +65,6 @@ SpiderMan admin
 ```
 
 #### Other
-<a href="EN_README.md">English</a> | <a href="CN_README.md">中文</a><br>
 Because my programming level is limited, and I am developing alone,<br>
 the page is not internationalized, the timing task is too simple, and so on. A series of problems,<br>
  if friends have better ideas, better implementations, or find bug. welcome fork modification! <br>
