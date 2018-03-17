@@ -1,14 +1,14 @@
 # SpiderMan 
-
+<a href="EN_README.md">English</a> | <a href="CN_README.md">中文</a><br>
 ## table of Contents  
 * [statement](#statement)  
-* [Background introduction](#Background introduction)  
-* [Project Introduction](#Project Introduction)  
+* [BackgroundIntroduction](#BackgroundIntroduction)  
+* [ProjectIntroduction](#ProjectIntroduction)  
 * [Instructions](#Instructions)  
-  * [Get code](#Get code)  
-  * [Use an example](#Use an example)  
-       * [Interface introduction](#Interface introduction)  
-       * [Interface style](#Interface style)
+  * [GetCode](#GetCode)  
+  * [UseAnEexample](#UseAnEexample)  
+       * [InterfaceIntroduction](#InterfaceIntroduction)  
+       * [InterfaceStyle](#InterfaceStyle)
        * [deploy](#deploy)  
 * [Other](#Other)  
   
@@ -16,12 +16,12 @@
 ## statement   
 *SpiderMan*pages are a lot of use <a href="http://image.baidu.com/">百度图片</a>Untagged copyrighted pictures, please contact me if you are suspected of infringement.
 <a name="Background introduction"></a>  
-## Background introduction  
+## BackgroundIntroduction 
 *SpiderMan* Based on Scrapy, scrapyd, scrapy-API, tornado spider distributed management framework.<br/>  
 *SpiderMan* Features include spider scheduling, Web side SSH, Web end code editor and Scrapy project construction and so on. 
   
 <a name="Project Introduction"></a>  
-## Project Introduction  
+## ProjectIntroduction 
 *SpiderMan* is designed to provide a convenient and distributed crawler management framework<br>  
 *SpiderMan* is developed on the basis of scrapyd API, and does not make any intrusion to existing crawler code<br>
 *SpiderMan* is embedded in the web editor so that you can write code, publish code, deploy new crawler projects to a specified server in web pages<br>
@@ -32,18 +32,19 @@
 ## Instructions  
   
 <a name="Get code"></a>  
-### Get code  
+### GetCode  
   
 * github Project Home: <https://github.com/QYLGitHub/SpiderMan>  
   
   
-<a name="Use an example"></a>  
-#### Interface introduction  
+<a name="UseAnEexample"></a> 
+ ## UseAnEexample
+#### InterfaceIntroduction
 * HOME:  Because I really don't know what to put a few things on the front page, but if there is no home page, I always feel strange!<br> ![Shurnim icon](SpiderMan/server/web/templates/static/images/readme/haipa.png)  
 * SERVER:  It is mainly used for the management of scrapyd servers, including: adding new servers, scheduling server specified spiders, deleting the items of the designated servers, and the Web Ssh. of the server.
 * PROJECT: The new local project is deployed to the specified server. This page includes: adding new projects, deleting items, editing project code, and deploying projects
 * There are also some subpages...
-#### Interface style
+#### InterfaceStyle
 * HOME <br> ![Shurnim icon](SpiderMan/server/web/templates/static/images/readme/home.png)
 * SERVER <br> ![Shurnim icon](SpiderMan/server/web/templates/static/images/readme/server.png)
 * PROJECT<br>![Shurnim icon](SpiderMan/server/web/templates/static/images/readme/project.png)
@@ -52,8 +53,14 @@
 ```
 clone project to local
 git clone https://github.com/QYLGitHub/SpiderMan.git
-
-cd 
+cd SpiderMan
+python setup.py install
+# init project
+SpiderMan init
+# Appoint host,port 
+SpiderMan runserver [host:port]
+# Create an administrator account
+SpiderMan admin
 
 ```
 

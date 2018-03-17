@@ -1,5 +1,5 @@
 # SpiderMan 
-
+<a href="EN_README.md">English</a> | <a href="CN_README.md">中文</a><br>
 ## 目录  
 * [声明](#声明)  
 * [背景介绍](#背景介绍)  
@@ -38,6 +38,7 @@
   
   
 <a name="使用实例"></a>  
+## 使用实例
 #### 界面  
 * 首页 由于首页我实在是不知道到底应该放一些什么东西, 但是如果没有首页的话,总是感觉觉怪怪的!<br> ![Shurnim icon](SpiderMan/server/web/templates/static/images/readme/haipa.png)  
 * 服务器 主要是用于对scrapyd 服务器的管理包括了: 添加新的服务器、调度服务器指定的蜘蛛、删除指定服务器的项目, 服务器的Web Ssh.
@@ -53,13 +54,18 @@
 ```
 克隆项目至本地
 git clone https://github.com/QYLGitHub/SpiderMan.git
-
-cd 
-
+cd SpiderMan
+python setup.py install
+# 初始化项目
+SpiderMan init
+# 指定host,port 
+SpiderMan runserver [host:port]
+# 创建管理员账号
+SpiderMan admin
 ```
 
 #### 其他
-<a href="EN_README.md">English</a> | <a href="CN_README.md">中文</a><br>
+
 由于本人编程水平有限并且只有我一个人在开发,<br>
 页面没有实现国际化, 定时任务程序过于简单,等等...<br>
 如果各位朋友有更好的想法、更好的实现或是发现bug.欢迎fork修改!<br>

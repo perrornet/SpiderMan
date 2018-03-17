@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2bb04099-845b-43fc-b4e3-cf061770a322" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan/server/web/templates/static/images/readme/haipa.png" afterPath="$PROJECT_DIR$/SpiderMan/server/web/templates/static/images/readme/haipa.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan.egg-info/SOURCES.txt" afterPath="$PROJECT_DIR$/SpiderMan.egg-info/SOURCES.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan/Cmd/scrapy_file.py" afterPath="$PROJECT_DIR$/SpiderMan/Cmd/scrapy_file.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan/model/gen_scrapy_spider.py" afterPath="$PROJECT_DIR$/SpiderMan/model/gen_scrapy_spider.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan/model/model_to_dict.py" afterPath="$PROJECT_DIR$/SpiderMan/model/model_to_dict.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan/model/scrapy_project.py" afterPath="$PROJECT_DIR$/SpiderMan/model/scrapy_project.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan/model/scrapy_template/crawl.tp" afterPath="$PROJECT_DIR$/SpiderMan/model/scrapy_template/crawl.tp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan/model/scrapy_template/csvf.tp" afterPath="$PROJECT_DIR$/SpiderMan/model/scrapy_template/csvf.tp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan/model/scrapy_template/xml.tp" afterPath="$PROJECT_DIR$/SpiderMan/model/scrapy_template/xml.tp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan/model/start_scrapy_project.py" afterPath="$PROJECT_DIR$/SpiderMan/model/start_scrapy_project.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan/server/web/api.py" afterPath="$PROJECT_DIR$/SpiderMan/server/web/api.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpiderMan/server/web/templates/project.html" afterPath="$PROJECT_DIR$/SpiderMan/server/web/templates/project.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EN_README.md" afterPath="$PROJECT_DIR$/EN_README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -24,12 +14,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="EN_README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/EN_README.md">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="323">
-                <caret line="34" column="14" lean-forward="true" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="14" />
+              <first_editor relative-caret-position="277">
+                <caret line="40" column="7" lean-forward="true" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -37,12 +27,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
+      <file leaf-file-name="EN_README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/EN_README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="293">
-                <caret line="31" column="9" lean-forward="true" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
+              <first_editor relative-caret-position="510">
+                <caret line="40" column="17" lean-forward="true" selection-start-line="40" selection-start-column="17" selection-end-line="40" selection-end-column="17" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -64,6 +54,7 @@
       <find>description</find>
       <find>新建</find>
       <find>Project Introduction</find>
+      <find>Interface introduction</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -75,8 +66,6 @@
         <option value="$PROJECT_DIR$/SpiderMan/model/model_to_dict.py" />
         <option value="$PROJECT_DIR$/SpiderMan/model/scrapy_project.py" />
         <option value="$PROJECT_DIR$/SpiderMan/server/web/templates/project.html" />
-        <option value="$PROJECT_DIR$/EN_README.md" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/SpiderMan/Cmd/scrapy_file.py" />
         <option value="$PROJECT_DIR$/SpiderMan/model/start_scrapy_project.py" />
         <option value="$PROJECT_DIR$/SpiderMan/server/web/api.py" />
@@ -85,6 +74,8 @@
         <option value="$PROJECT_DIR$/SpiderMan/model/scrapy_template/csvf.tp" />
         <option value="$PROJECT_DIR$/SpiderMan/model/scrapy_template/xml.tp" />
         <option value="$PROJECT_DIR$/SpiderMan/model/gen_scrapy_spider.py" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/EN_README.md" />
       </list>
     </option>
   </component>
@@ -141,11 +132,6 @@
           <expand>
             <path>
               <item name="SpiderMan" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SpiderMan" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SpiderMan" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SpiderMan" type="462c0819:PsiDirectoryNode" />
               <item name="SpiderMan" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -456,8 +442,8 @@
     <entry file="file://$PROJECT_DIR$/EN_README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="323">
-            <caret line="34" column="14" lean-forward="true" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="14" />
+          <first_editor relative-caret-position="510">
+            <caret line="40" column="17" lean-forward="true" selection-start-line="40" selection-start-column="17" selection-end-line="40" selection-end-column="17" />
             <folding />
           </first_editor>
           <second_editor />
@@ -467,8 +453,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="293">
-            <caret line="31" column="9" lean-forward="true" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
+          <first_editor relative-caret-position="277">
+            <caret line="40" column="7" lean-forward="true" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
             <folding />
           </first_editor>
           <second_editor />
