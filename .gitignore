@@ -2,7 +2,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+*.js linguist-language=python
+*.css linguist-language=python
+*.html linguist-language=python
 # C extensions
 *.so
 
