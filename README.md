@@ -1,5 +1,5 @@
 # SpiderMan 
-<a href="EN_README.md">English</a> | <a href="CN_README.md">中文</a><br>
+<a href="EN_README.md">English</a> | <a href="README.md">中文</a><br>
 ## 目录  
 * [声明](#声明)  
 * [背景介绍](#背景介绍)  
