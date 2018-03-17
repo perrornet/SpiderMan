@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>file</title>
+
+		<style type="text/css" media="screen">
+			#editor {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+			}
+			#sure{
+				width: 50px;
+				height: 50px;
+				background-color: darkcyan;
+				border-radius: 10px;
+				position: fixed;
+				right: 10%;
+				top: 10%;
+                z-index: 1000;
+			}
+
+		</style>
+		<script id="{{ id }}" class="isTrue" src="{{static_url('js/jquery-1.11.0.min.js')}}"></script>
+		<link rel="stylesheet" href="{{static_url('css/message.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{static_url('css/bootstrap.css')}}">
+		<script src="{{static_url('js/message.js')}}"></script>
+		<script src="{{static_url('js/Conf.js')}}"></script>
+	</head>
+
+	<body>
+		<div id="sure"></div>
+		<div id="editor">{{ code }}</div>
+
+		<script src="{{static_url('js/ace.js')}}" type="text/javascript" charset="utf-8"></script>
+		<script src="{{static_url('js/ext-language_tools.js')}}"></script>
+
+		<script>
+			var editor = ace.edit("editor");
+			editor.setTheme("ace/theme/twilight");
+			editor.getSession().setMode("ace/mode/python");
+			editor.setOptions({
+				enableBasicAutocompletion: true,
+				enableSnippets: true,
+				enableLiveAutocompletion: false
+			});
+			editor.$blockScrolling = Infinity;
+			var file_name = window.location.href.split('/')[11];
+//			console.log(document.referrer);
+            if (Number(document.getElementsByClassName('isTrue')[0].id) == 0){
+                $.message({
+                        message:'error: not find {file_name} file!'.format({file_name: file_name}),
+                        type:'error'
+                    });
+                setTimeout(function(){ console.log(""); }, 1000);
+//                console.log(document.referrer);
+                window.location.href = document.referrer;
+			}
+
+
+		</script>
+	</body>
+
+</html>

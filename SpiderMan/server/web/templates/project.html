@@ -1,0 +1,399 @@
+{% extends "base.html" %}
+{% block title %}Server{% end %}
+{% block uu %}
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_bootstrap.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_font-awesome.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_animate.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_select2.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_perfect-scrollbar.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_util.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_main.css')}}">
+    <link href="{{static_url('css/bootstrap.min.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{static_url('css/message.css')}}">
+
+    <!--弹出层-->
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/tan_default.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/tan_component.css')}}" />
+    <script src="{{static_url('js/tan_modernizr.custom.js')}}"></script>
+
+    <!--弹出层 input-->
+    <link rel="stylesheet" type="text/css" href="{{static_url('input/normalize.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{static_url('input/font-awesome.min.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{static_url('input/demo.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{static_url('input/component.css')}}" />
+
+    <!--<link rel="stylesheet" type="text/css" href="{{static_url('css/normalize.css')}}" />-->
+    <!--<link rel="stylesheet" type="text/css" href="{{static_url('css/zzsc-demo.css')}}">-->
+    <link rel="stylesheet" href="{{static_url('css/select-theme-dark.css')}}" />
+<style type="text/css">
+	.container{
+		width: 900px;
+		margin: 0 auto;
+	}
+	select {
+			font-size: 1em;
+		}
+
+		.scroll-parent {
+			margin: 40px;
+			height: 300px;
+			width: 350px;
+			display: inline-block;
+
+			overflow: auto;
+			border: 2px solid #eee;
+			padding: 40px;
+		}
+</style>
+
+{% end %}
+
+{% block body %}
+<!--弹出新建项目-->
+<!--name="show"-->
+<!--md-modal md-effect-1 md-show-->
+<div class="md-modal md-effect-1" id="modal-1">
+        <div class="md-content">
+            <section class="content bgcolor-7" >
+                <h3 style="background: rgba(0,0,0,0);">New project</h3>
+                <!-- input input--jiro input--filled -->
+                <span class="input input--jiro" id="project_name" onclick="on_input_click(this)">
+                    <input class="input__field input__field--jiro" type="text" id="project_name" />
+                    <label class="input__label input__label--jiro" for="host_id">
+                        <span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Project name</span>
+                    </label>
+                </span>
+                <span class="input input--jiro" id="spdier_name" onclick="on_input_click(this)">
+                    <input class="input__field input__field--jiro" type="text" id="spider_name" />
+                    <label class="input__label input__label--jiro" for="host_id">
+                        <span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Spdier name(scrapy crawl xxx)</span>
+                    </label>
+                </span>
+
+                <span class="input input--jiro" id="project_description" onclick="on_input_click(this)">
+                    <input class="input__field input__field--jiro" type="text" id="project_description" />
+                    <label class="input__label input__label--jiro" for="host_id">
+                        <span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Project description</span>
+                    </label>
+                </span>
+                <span class="input input--jiro" id="scrapyd_model" onclick="on_input_click(this)">
+                    <input class="input__field input__field--jiro" type="text" id="scrapyd_model" />
+                    <label class="input__label input__label--jiro" for="host_id">
+                        <span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Scrapy base model(basic, crawl, csvfeed, xmlfeed)</span>
+                    </label>
+                </span>
+                <span class="input input--jiro" id="scrapy_start_url" onclick="on_input_click(this)">
+                    <input class="input__field input__field--jiro" type="text" id="scrapy_start_url" />
+                    <label class="input__label input__label--jiro" for="host_id">
+                        <span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Start url</span>
+                    </label>
+                </span>
+                <button class="md-close btn btn-success" style="width: 30%;margin-top: 1%; height: 50%;" onclick="on_project_save()">Save</button>
+                <button class="md-close btn btn-success" style="width: 30%;margin-top: 1%; height: 50%;" onclick="on_project_esc()">Cancel</button>
+            </section>
+        </div>
+    </div>
+
+    <!--部署项目弹出层选择-->
+    <div id="build_project_text">
+        <div class="md-modal md-effect-1" id="modal-1">
+            <div class="md-content">
+                <section class="content bgcolor-7" >
+                    <div class="scroll-parent" id="name">
+                        <select data-select-like-alignement="never" class="drop-select">
+
+                        </select>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <div class="limiter" style="margin-top: 2.93%;width: 100%;">
+        <div class="table100 ver3 m-b-110">
+            <div class="table100-head">
+                <table>
+                    <thead>
+                        <tr class="row100 head">
+                            <th class="cell100 column5" style="text-align: center;width: 10%;">Project name</th>
+                            <th class="cell100 column4" style="text-align: center;">description</th>
+                            <th class="cell100 column3" style="text-align: center;">Create time</th>
+                            <th class="cell100 column2" style="text-align: center;">Update time</th>
+                            <th class="cell100 column2" style="text-align: center;">Deploy</th>
+                            <th class="cell100 column1" style="text-align: center;">Option</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div class="table100-body js-pscroll">
+                <table >
+                    <tbody id="project">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+	</div>
+
+<div style="display: none" id="def_bu">
+
+</div>
+<!--===============================================================================================-->
+    <script src="{{static_url('js/popper.js')}}"></script>
+    <script src="{{static_url('js/bootstrap.min.js')}}"></script>
+    <script src="{{static_url('js/select2.min.js')}}"></script>
+    <script src="{{static_url('js/perfect-scrollbar.min.js')}}"></script>
+	<script src="{{static_url('js/message.js')}}"></script>
+	<script src="{{static_url('js/host_list_main.js')}}"></script>
+    <script src="{{static_url('input/classie.js')}}"></script>
+
+    <script type="text/javascript" src="{{static_url('js/tether.js')}}"></script>
+	<script src="{{static_url('js/select.js')}}"></script>
+
+    <script>
+        document.getElementById('def_bu').innerHTML = '<button class="btn btn-success md-trigger" onclick="on_start($(this))" data-modal="modal-1" style="margin-left: 1%;float: left;">New project</button>';
+
+        $('select.drop-select').each(function(){
+			d = new Select({
+				el: this,
+				selectLikeAlignment: $(this).attr('data-select-like-alignement') || 'auto',
+				className: 'select-theme-dark'
+			});
+		});
+
+        $('.js-pscroll').each(function(){
+            var ps = new PerfectScrollbar(this);
+            $(window).on('resize', function(){
+                ps.update();
+            })
+        });
+
+        function on_input_click(e) {
+            e.className = 'input input--jiro input--filled';
+        }
+
+        function start_html() {
+            $.ajax({
+            url: Option.location_list_project_url,
+            type: "GET",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                var tables = '';
+
+                if (!data.data){
+                    // 没有本地项目
+
+                    tables += '<tr class="row100 body">';
+                    tables += '<td class="cell100 column5" style="text-align: center;width: 10%;">   </td>';
+                    tables += '<td class="cell100 column4" style="text-align: center;">  </td>';
+                    tables += '<td class="cell100 column3" style="text-align: center;">  </td>';
+                    tables += '<td class="cell100 column2" style="text-align: center;">  </td>';
+                    tables += '<td class="cell100 column1" style="text-align: center;">';
+                    tables += '<button class="btn btn-success md-trigger" onclick="on_start($(this))" data-modal="modal-1" style="margin-left: 38%;margin-top: 1%;">New project</button>';
+                    $.message({
+                        message:'No local project was created !',
+                        type:'info',
+                        time: 5000
+                    });
+                    document.getElementById("def_bu").style.display="none";
+                }else {
+                    for (var index = 0; index < data.data.length; index++){
+                        tables += '<tr class="row100 body" id="project_list">';
+                        tables += '<td class="cell100 column5" style="text-align: center;width: 10%;">{project_name}</td>'.format({project_name: data.data[index].project_name});
+                        tables += '<td class="cell100 column4" style="text-align: center;">{description}</td>'.format({description: data.data[index].description});
+                        tables += '<td class="cell100 column3" style="text-align: center;">{create_time}</td>'.format({create_time: data.data[index].create_time});
+                        tables += '<td class="cell100 column2" style="text-align: center;">{update_time}</td>'.format({update_time: data.data[index].update_time});
+                        if (data.data[index].host_id == null){
+                            tables += '<td class="cell100 column2" style="text-align: center;" name="{id}"> × </td>'.format({update_time: data.data[index].update_time, id: data.data[index].id});
+                        }else{
+                            tables += '<td class="cell100 column2" style="text-align: center;" name="{id}"> √ </td> '.format({update_time: data.data[index].update_time, id: data.data[index].id});
+                        }
+                        tables += '<td class="cell100 column1" style="text-align: center;" id="{project_name}">'.format({project_name: data.data[index].project_name});
+                        tables += '<button class="btn btn-success" data-modal="modal-1" onclick="on_project_delete(this)" style="margin-left: 20%;margin-top: 1%;">Delete</button>';
+                        tables += '<button class="btn btn-success md-trigger" onclick="on_project_select($(this))" data-modal="modal-2" style="margin-left: 1%;margin-top: 1%;" id="{id}">Deploy</button>'.format({id: data.data[index].id});
+                        tables += '<button class="btn btn-success" data-modal="modal-1" onclick="on_project_edit(this)" style="margin-left: 1%;margin-top: 1%;" name="{id},,{project_name}">Edit</button>'.format({id: data.data[index].id,project_name: data.data[index].project_name});
+                        tables += '</td></tr>'
+                    }
+                    document.getElementById("def_bu").style.display="inline";
+                }
+                document.getElementById('project').innerHTML = tables;
+
+//                document.getElementById("def_bu").style.display="inline";
+            }
+        })
+        }
+        start_html();
+
+        function on_project_select(e) {
+            // 部署 选择
+//            $('#select_text').innerHTML =
+//            $('#modal-2')[0].className = 'md-modal md-effect-1 md-show';
+            // 请求主机列表
+
+            var project_id = e[0].id;
+            var css_str = 'z-index: 9999999999;width: 50%;display: inline-block;vertical-align: middle;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;-o-user-select: none;user-select: none;-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;border-radius: .25em;position: relative;padding: 0.5rem 3em 0.5rem 1em;background: #252525;border: .18em solid #151515;cursor: pointer;/* color: #b9b9b9; */text-decoration: none;white-space: nowrap;max-width: 100%;overflow: hidden;text-overflow: ellipsis;'
+            $.ajax({
+                url: Option.host_list_url,
+                dataTpye: "json",
+                type: "GET",
+                async: true,
+                success: function (data) {
+                    var tables = '';
+                    tables += '<div class="md-modal md-effect-1" id="modal-2">';
+                    tables += '<div class="md-content">';
+                    tables += '<h3 style="background: rgba(0,0,0,0);">Deploy server</h3>';
+                    tables += '<select id="select_text" style="{css}">'.format({css:css_str});
+                    for (var index = 0; index < data.data.length; index ++){
+                        tables += '<option value="{name}" onclick="select_list(this)" style="font-size: 20px;" id="{id}">{name}</option>'.format({name: data.data[index].host, id: data.data[index].id});
+                    }
+                    tables += '</select>';
+                    tables += '<button onclick="dd(this)" style="width: 15%;display: inline; margin-left: 10%;" id="{id}">Submit</button>'.format({id: project_id});
+                    tables += '<button onclick="ddd(this)" style="width: 15%;display: inline; margin-left: 2%;">Cancel</button>';
+                    tables += '</div></div>';
+                    $('#build_project_text')[0].innerHTML = tables;
+                    $('#modal-2')[0].className = 'md-modal md-effect-1 md-show';
+                }
+            })
+
+        }
+
+
+        function on_start(obj) {
+            $('#modal-1')[0].className = 'md-modal md-effect-1 md-show';
+        }
+
+        function ddd(e) {
+            $('#modal-2')[0].className = 'md-modal md-effect-1';
+        }
+
+        function dd(e) {
+            host_id = $('#select_text option:selected')[0].id;
+            var project_id = e.id;
+            $.message({
+                message: "Deploy....",
+                time: 5000,
+                type: "info"
+            });
+            console.log(project_id);
+            $.ajax({
+                url: Option.deploy_project_url.format({host_id: host_id,  project_id: e.id}),
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    $.message('Deploy success');
+                    ddd();
+                    $("td[name='{id}']".format({id:project_id}))[0].innerHTML = $("td[name='{id}']".format({id:project_id}))[0].innerHTML.replace('×', '√');
+                }
+            })
+        }
+
+        function on_project_edit(e) {
+            var project_info = e.name.split(',,');
+            console.log(window.location.href.replace(window.location.pathname, Option.edit_scrapy_file_url.format({project_id: project_info[0]})));
+            window.location.href = window.location.href.replace(window.location.pathname, Option.edit_scrapy_file_url.format({project_id: project_info[0]}))
+        }
+
+
+
+        function on_project_delete(e) {
+            project_name = $(e).parent()[0].id;
+            $.ajax({
+                url: Option.delete_location_project_url.format({project_name: project_name}),
+                type: "DELETE",
+                dataType: "json",
+                success: function (data) {
+                    if (data.data){
+                        $.message('Delete success');
+                        // 清除这个元素
+                        e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode);
+                        if (document.getElementById('project_list') === null) {
+                            var tables = '';
+                            tables += '<tr class="row100 body">';
+                            tables += '<td class="cell100 column5" style="text-align: center;width: 10%;">   </td>';
+                            tables += '<td class="cell100 column4" style="text-align: center;">  </td>';
+                            tables += '<td class="cell100 column3" style="text-align: center;">  </td>';
+                            tables += '<td class="cell100 column2" style="text-align: center;">  </td>';
+                            tables += '<td class="cell100 column1" style="text-align: center;">';
+                            tables += '<button class="btn btn-success md-trigger" onclick="on_start($(this))" data-modal="modal-1" style="margin-left: 38%;margin-top: 1%;">新建</button>';
+                            document.getElementById("def_bu").style.display="none";
+                            document.getElementById('project').innerHTML = tables;
+
+                        }
+                    }
+                }
+            })
+        }
+
+
+        function on_project_esc() {
+            $('#modal-1')[0].className = 'md-modal md-effect-1';
+        }
+
+
+        function on_project_save() {
+            // close window
+
+             var data = {};
+			[].slice.call( document.querySelectorAll( 'input.input__field' )).forEach( function( inputEl ) {
+				if( inputEl.value.trim() !== '' ) {
+					classie.add( inputEl.parentNode, 'input--filled' );
+				}
+				switch (inputEl.id){
+                    case 'project_name':
+                        data["project_name"] = inputEl.value;
+                        break;
+                    case 'project_description':
+                        data["project_description"] = inputEl.value;
+                        break;
+                    case 'scrapyd_model':
+                        data["scrapyd_model"] = inputEl.value;
+                        break;
+                    case 'scrapy_start_url':
+                        data["scrapy_start_url"] = inputEl.value;
+                        break;
+
+                    case 'spider_name':
+                        data["spider_name"] = inputEl.value;
+                        break;
+                }
+            });
+			console.log();
+			console.log(!data.project_name || !data.spider_name);
+            if (!data.project_name || !data.spider_name) {
+                $.message({
+                    message: "Project name and spider name cannot be empty",
+                    type: "error",
+                    time: 5000
+                });
+            }else{
+                if (data.project_name === data.spider_name){
+                $.message({
+                    message: "project name cannot be the same as the spider name!",
+                    type: "error",
+                    time: 5000
+                })
+            }else{
+                $('#modal-1')[0].className = 'md-modal md-effect-1';
+                $.ajax({
+                url: Option.start_project_url,
+                type: "POST",
+                dataType: "json",
+                data: data,
+                success: function (data) {
+                    if (data.data){
+                        $.message('Save success');
+                        start_html();
+                        }
+                    }
+                });
+            }
+            }
+
+        }
+
+    </script>
+    <script src="{{static_url('js/host_list_main.js')}}"></script>
+
+{% end %}

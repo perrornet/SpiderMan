@@ -1,0 +1,137 @@
+
+{% extends "base.html" %}
+{% block title %}定时任务{% end %}
+{% block uu %}
+
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_bootstrap.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_font-awesome.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_animate.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_select2.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_perfect-scrollbar.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_main.css')}}">
+	<!--<link href="{{static_url('css/bootstrap.min.css')}}" rel="stylesheet" />-->
+	<!--<link rel="stylesheet" type="text/css" href="{{static_url('css/bootstrap.css')}}">-->
+	<!--<link rel="stylesheet" href="{{static_url('css/message.css')}}">-->
+{% end %}
+
+
+{% block body %}
+
+    <div class="limiter" style="margin-top: 55px;width: 100%;max-height: 80%;overflow-y: scroll;">
+				<div class="table100 ver3 m-b-110">
+					<div class="table100-head">
+						<table>
+							<thead>
+								<tr class="row100 head">
+									<th class="cell100 column5" style="margin-left: 20%;">主机域名</th>
+									<th class="cell100 column2">主机名称</th>
+									<th class="cell100 column3">蜘蛛名称</th>
+									<th class="cell100 column4">运行间隔</th>
+									<th class="cell100 column1" style="text-align: center;">操作</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+
+					<div class="table100-body js-pscroll">
+						<table >
+							<tbody >
+                                {% for key in item %}
+                                    <tr class="row100 body">
+                                        <td class="cell100 column5" >{{ key['host'] }}</td>
+                                        <td class="cell100 column2">{{ key['name'] }}</td>
+                                        <td class="cell100 column3">{{ key['spider_name'] }}</td>
+                                        <td class="cell100 column1">
+											<button onclick="onClickUpdateTime(this)" id="{{ key['id'] }}" class="btn btn-success " style="margin-left: 20%;margin-top: 1%;width: 15%; height: 1%;">修改</button>
+                                        </td>
+                                    </tr>
+                                {% end %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+	</div>
+
+<!--===============================================================================================-->
+<!--===============================================================================================-->
+
+    <script src="{{static_url('js/popper.js')}}"></script>
+    <script src="{{static_url('js/bootstrap.min.js')}}"></script>
+    <script src="{{static_url('js/select2.min.js')}}"></script>
+    <script src="{{static_url('js/perfect-scrollbar.min.js')}}"></script>
+	<script src="{{static_url('js/message.js')}}"></script>
+    <script>
+		$('.js-pscroll').each(function(){
+			var ps = new PerfectScrollbar(this);
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+
+        function onClickUpdateTime(obj){
+            var host_id = obj.id;
+            var list_project = [];
+            var all_spider = [];
+            $.ajax({
+                //url:"http://服务器地址：端口号/服务器文件路径
+                //服务器地址要注意是ipv4的，ipv6测试暂时没成功。
+                url: Option.list_project_url.format({host_id: host_id}),
+                //get/post都可以的请求方式
+                type: "GET",
+                //是否同步，false为异步加载
+                async: true,
+                //设置返回数据类型jsonp
+                dataType: "json",
+                //jsonp的字段，服务器返回的前缀要和这个一样
+                //data: {name:"Lily"},
+                success: function (data) {
+                   list_project = data.project;
+                }
+            });
+            list_project.map(function (value,index,array){
+                // 获取所有的spider
+                $.ajax({
+                //url:"http://服务器地址：端口号/服务器文件路径
+                //服务器地址要注意是ipv4的，ipv6测试暂时没成功。
+                url: Option.list_spider_url.format({host_id: host_id, project_name: value}),
+                //get/post都可以的请求方式
+                type: "GET",
+                //是否同步，false为异步加载
+                async: true,
+                //设置返回数据类型jsonp
+                dataType: "json",
+
+                success: function (data) {
+                    all_spider = data.data;
+                }
+                });
+            });
+
+            list_project.map(function (value,index,array){
+                // 获取已经定时的spider
+                $.ajax({
+                url: Option.get_timing_spider_url,
+                //get/post都可以的请求方式
+                type: "GET",
+                //是否同步，false为异步加载
+                async: true,
+                //设置返回数据类型jsonp
+                dataType: "json",
+
+                success: function (data) {
+                    all_spider = data.data;
+                }
+                });
+            });
+
+
+
+        }
+
+	</script>
+<!--===============================================================================================-->
+	<script src="{{static_url('js/host_list_main.js')}}"></script>
+{% end %}
+

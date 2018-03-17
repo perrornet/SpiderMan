@@ -1,0 +1,57 @@
+<!--Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+	<title>Spider man login</title>
+	<!-- Meta tag Keywords -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Creative Login Form Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements"
+	/>
+	<script type="application/x-javascript">
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+
+	<link rel="stylesheet" href="{{static_url('css/style.css')}}" type="text/css" media="all" />
+
+	<link rel="stylesheet" href="{{static_url('css/font-awesome.css')}}">
+	<link href="{{static_url('css/ro.css')}}" rel="stylesheet">
+
+</head>
+
+<body>
+	<div class="main-content-agile">
+		<div class="sub-main-w3">
+
+			<h2>Login</h2>
+			<form action="/api/admin/auth/" method="post">
+				<div class="pom-agile">
+					<span class="fa fa-user-o" aria-hidden="true"></span>
+					{% module xsrf_form_html() %}
+        			<input type="hidden" name="next" value="{{ next }}"/>
+					<input placeholder="{{ msg }}" name="username" class="user" type="text" required="">
+				</div>
+				<div class="pom-agile">
+					<span class="fa fa-key" aria-hidden="true"></span>
+					<input placeholder="{{ msg }}" name="password" class="pass" type="password" required="">
+				</div>
+				<div class="right-w3l">
+					<input type="submit" value="Login">
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

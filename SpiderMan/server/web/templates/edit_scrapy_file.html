@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>file</title>
+
+		<style type="text/css" media="screen">
+			#editor {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+			}
+			#sure{
+				width: 50px;
+				height: 50px;
+				background-color: darkcyan;
+				border-radius: 10px;
+				position: fixed;
+				right: 10%;
+				top: 10%;
+                z-index: 1000;
+			}
+
+		</style>
+		<script id="{{ id }}" class="isTrue" src="{{static_url('js/jquery-1.11.0.min.js')}}"></script>
+		<link rel="stylesheet" href="{{static_url('css/message.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{static_url('css/bootstrap.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{static_url('css/bootstrap.min.css')}}">
+        <!--目录树-->
+        <link rel="stylesheet" type="text/css" href="{{static_url('css/file_tree_normalize.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{static_url('css/file_tree_htmleaf-demo.css')}}">
+        <link href="{{static_url('css/file_tree_file-explore.css')}}" rel="stylesheet" type="text/css">
+        <!----------------------------------------------------------------------->
+		<script src="{{static_url('js/message.js')}}"></script>
+		<script src="{{static_url('js/Conf.js')}}"></script>
+
+
+	</head>
+
+	<body>
+        <!--class  class=" ace_editor ace-twilight ace_dark" ace_focus-->
+
+        <ul class="file-tree" id="file-tree"></ul>
+
+		<div id="editor" style="margin-left: 10%;"></div>
+        <div style="display:none" id="select_file"></div>
+
+
+		<script src="{{static_url('js/ace.js')}}" type="text/javascript" charset="utf-8"></script>
+		<script src="{{static_url('js/ext-language_tools.js')}}"></script>
+        <script src="{{static_url('js/file_tree_file-explore.js')}}"></script>
+        <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+		<script>
+            var project_id = window.location.href.split('/')[5];
+
+            $(document).ready(function() {
+            		$(".file-tree").filetree();
+	        });
+
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/twilight");
+            editor.getSession().setMode("ace/mode/python");
+            editor.setOptions({
+                enableBasicAutocompletion: true,
+                enableSnippets: true,
+                enableLiveAutocompletion: false
+            });
+            editor.getSession().setUseWrapMode(true);
+            editor.setHighlightActiveLine(false);
+            editor.$blockScrolling = Infinity;
+
+
+            function save_file() {
+                $.ajax({
+                    url: Option.update_file_url.format({
+                        project_id: project_id,
+                        file_name: window.location.href.split('#')[1]
+                    }),
+                    dataTpye: "json",
+                    type: "POST",
+                    data: {code: editor.getValue()},
+                    success: function (data) {
+                        $.message({message: "Save success", time: 1000});
+                    }
+                });
+            }
+
+
+            editor.getSession().on('change', function(e) {
+                $.ajax({
+                    url: Option.update_file_url.format({
+                        project_id: project_id,
+                        file_name: window.location.href.split('#')[1]
+                    }),
+                    dataTpye: "json",
+                    type: "POST",
+                    data: {code: editor.getValue()},
+                    success: function (data) {
+                        $.message({message: "Automatic preservation", time: 100});
+                    }
+                });
+            });
+
+
+            $.ajax({
+                url: Option.location_list_spider_py_url.format({project_id: project_id}),
+                dataTpye: "json",
+                type: "GET",
+                success: function (data) {
+                    var tables = '';
+                    var file_names = window.location.href.split('#');
+                    if (file_names.length == 2){
+                        $.ajax(
+                            {
+                            url: Option.edit_scrapy_file_url.format({project_id: project_id, file_name: file_names[1]}),
+                            dataType: "json",
+                            type: "GET",
+                            success: function (data) {
+                                editor.setValue(data.data);
+                                $('#select_file')[0].innerText = files;
+                            }
+                        })
+                    }
+                    for (var index = 0; index < data.data.length; index ++){
+                        tables += '<li><a onclick="file(this)" href="#{filename}">{filename}</a></li>'.format({filename: data.data[index]});
+                    }
+                    tables += '<div style="margin-top: 43%;">';
+                    tables += '<button class="btn btn-success md-trigger" onclick="save_file()" style="width: 10%;">Save</button><br / >';
+                    tables += '<a href="/html/project/" class="btn-success"><button class="btn btn-success md-trigger" style="width: 10%;">Back</button></a></div>';
+                    $('#file-tree')[0].innerHTML = tables;
+                }
+            });
+
+            function file(e) {
+                var files = e.text;
+                var lat_file_name = window.location.href.split('#')[1];
+                $.ajax({
+                    url: Option.get_file_url.format({project_id: project_id, file_name: files}),
+                    dataType: "json",
+                    type: "GET",
+                    success: function (data) {
+                        editor.setValue(data.data);
+                        $('#select_file')[0].innerText = files;
+                    }
+                })
+            }
+		</script>
+    <script>
+
+    </script>
+	</body>
+
+</html>

@@ -1,0 +1,543 @@
+{% extends "base.html" %}
+{% block title %}server{% end %}
+{% block uu %}
+
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_bootstrap.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_font-awesome.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_animate.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_select2.min.css')}}">
+
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_perfect-scrollbar.css')}}">
+
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_main.css')}}">
+	<link href="{{static_url('css/bootstrap.min.css')}}" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/bootstrap.css')}}">
+	<link rel="stylesheet" href="{{static_url('css/message.css')}}">
+	<!--弹出层-->
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/tan_default.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{static_url('css/tan_component.css')}}" />
+	<script src="{{static_url('js/tan_modernizr.custom.js')}}"></script>
+
+	<!--弹出层 input-->
+	<link rel="stylesheet" type="text/css" href="{{static_url('input/normalize.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{static_url('input/font-awesome.min.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{static_url('input/demo.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{static_url('input/component.css')}}" />
+	<!--<script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>-->
+
+{% end %}
+
+
+{% block body %}
+    <!--新建-->
+	<div class="md-modal md-effect-1" id="modal-1">
+			<div class="md-content">
+				<section class="content bgcolor-7" >
+					<h3 style="background: rgba(0,0,0,0);">Add server</h3>
+					<span class="input input--jiro">
+						<input class="input__field input__field--jiro" type="text" id="new_host_id" />
+						<label class="input__label input__label--jiro" for="host_id">
+							<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server domain</span>
+						</label>
+					</span>
+                    <span class="input input--jiro">
+						<input class="input__field input__field--jiro" type="text" id="new_host_port" />
+						<label class="input__label input__label--jiro" for="host_id">
+							<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server port</span>
+						</label>
+					</span>
+					<span class="input input--jiro">
+						<input class="input__field input__field--jiro" type="text" id="new_host_name" />
+						<label class="input__label input__label--jiro" for="host_id">
+							<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server name</span>
+						</label>
+					</span>
+					<span class="input input--jiro">
+						<input class="input__field input__field--jiro" type="text" id="new_scrapy_name" />
+						<label class="input__label input__label--jiro" for="host_id">
+							<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Scrapyd name</span>
+						</label>
+					</span>
+						<span class="input input--jiro">
+						<input class="input__field input__field--jiro" type="text" id="new_scrapy_password" />
+						<label class="input__label input__label--jiro" for="host_id">
+							<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Scrapyd password</span>
+						</label>
+					</span>
+
+						<span class="input input--jiro">
+						<input class="input__field input__field--jiro" type="text" id="new_ssh_name" />
+						<label class="input__label input__label--jiro" for="host_id">
+							<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server ssh name</span>
+						</label>
+					</span>
+						<span class="input input--jiro">
+						<input class="input__field input__field--jiro" type="text" id="new_ssh_password" />
+						<label class="input__label input__label--jiro" for="host_id">
+							<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server ssh password</span>
+						</label>
+					</span>
+					<button class="md-close btn btn-success" style="width: 30%;margin-top: 1%; height: 50%;" onclick="on_save()">Save</button>
+					<button class="md-close btn btn-success" style="width: 30%;margin-top: 1%; height: 50%;" onclick="on_fush(this)">Cancel</button>
+				</section>
+			</div>
+		</div>
+
+    <!--修改配置-->
+	<div class="md-modal md-effect-1" id="modal-2">
+		<div class="md-content">
+			<section class="content bgcolor-7" >
+				<h3 style="background: rgba(0,0,0,0);">Modify config</h3>
+				<span class="input input--jiro">
+					<input class="input__field input__field--jiro" type="text" id="host_id" />
+					<label class="input__label input__label--jiro" for="host_id">
+						<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server domain</span>
+					</label>
+				</span>
+				<span class="input input--jiro">
+					<input class="input__field input__field--jiro" type="text" id="host_port" />
+					<label class="input__label input__label--jiro" for="host_id">
+						<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server port</span>
+					</label>
+				</span>
+				<span class="input input--jiro">
+					<input class="input__field input__field--jiro" type="text" id="host_name" />
+					<label class="input__label input__label--jiro" for="host_id">
+						<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server name</span>
+					</label>
+				</span>
+				<span class="input input--jiro">
+					<input class="input__field input__field--jiro" type="text" id="scrapy_name" />
+					<label class="input__label input__label--jiro" for="host_id">
+						<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Scrapyd name</span>
+					</label>
+				</span>
+					<span class="input input--jiro">
+					<input class="input__field input__field--jiro" type="text" id="scrapy_password" />
+					<label class="input__label input__label--jiro" for="host_id">
+						<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Scrapyd password</span>
+					</label>
+				</span>
+
+					<span class="input input--jiro">
+					<input class="input__field input__field--jiro" type="text" id="ssh_name" />
+					<label class="input__label input__label--jiro" for="host_id">
+						<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server ssh name</span>
+					</label>
+				</span>
+					<span class="input input--jiro">
+					<input class="input__field input__field--jiro" type="text" id="ssh_password" />
+					<label class="input__label input__label--jiro" for="host_id">
+						<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server ssh password</span>
+					</label>
+				</span>
+				<button class="md-close btn btn-success" style="width: 30%;margin-top: 1%; height: 50%;" onclick="on_old_save()">Save</button>
+				<button class="md-close btn btn-success" style="width: 30%;margin-top: 1%; height: 50%;" onclick="on_fush(this)">Cancel</button>
+		</section>
+		</div>
+	</div>
+
+
+
+	<!--删除Host Project-->
+	<div id="delete_host_project"></div>
+
+
+    <div class="limiter" style="margin-top: 55px;width: 100%;max-height: 80%;">
+		<div class="table100 ver3 m-b-110">
+			<div class="table100-head">
+				<table>
+					<thead>
+						<tr class="row100 head">
+							<th class="cell100 column5" style="margin-left: 20%;">Server domain</th>
+							<th class="cell100 column2">Server name</th>
+							<th class="cell100 column3">Create time</th>
+							<th class="cell100 column4">Server state</th>
+							<th class="cell100 column1" style="text-align: center;">Option</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+
+			<div class="table100-body js-pscroll">
+				<table >
+					<tbody id="tables_tboby">
+					{%if item%}
+						{% for key in item %}
+							<tr class="row100 body" id="1">
+								<td class="cell100 column5">{{ key['host'] }}</td>
+								<td class="cell100 column2">{{ key['name'] }}</td>
+								<td class="cell100 column3">{{ key['create_time'] }}</td>
+                                {% if key['is_run'] %}
+								    <td class="cell100 column4" id="is_run_{{ key['id_'] }}">√</td>
+                                {% else %}
+								    <td class="cell100 column4" id="is_run_{{ key['id_'] }}">×</td>
+                                {% end %}
+								<td class="cell100 column1">
+
+									<button onclick="onClickDelete(this)" id="{{ key['id_'] }}" class="btn btn-success" style="margin-top: 1%;margin-left: 10%">Delete server</button>
+									<button onclick="onClickDeleteProject(this)" id="{{ key['id_'] }}" class="btn btn-success" style="margin-top: 1%;">Delete server project</button>
+									<button onclick="onClickSchedul(this)" id="{{ key['id_'] }}" class="btn btn-success" style="margin-top: 1%;">Schedul</button>
+									<button class="btn btn-success md-trigger" data-modal="modal-2" style="margin-top: 1%;" onclick="conf_host($(this))">Config</button>
+									<button class="btn btn-success "  style="margin-top: 1%;" id="{{ key['id_'] }}" onclick="on_ssh(this)">Ssh</button>
+								</td>
+							</tr>
+						{% end %}
+					{% else %}
+						<tr class="row100 body" id="0">
+								<td class="cell100 column5"></td>
+								<td class="cell100 column2"></td>
+								<td class="cell100 column3"></td>
+								<td class="cell100 column4"></td>
+								<td class="cell100 column1">
+									<button class="md-trigger" data-modal="modal-1" style="margin-left: 45%;">Add new server</button>
+								</td>
+							</tr>
+					{% end %}
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% if item%}
+    <button class="md-trigger btn btn-success" data-modal="modal-1" style="margin-left: 1%;float: left;">Add new server</button>
+{% end %}
+<!--===============================================================================================-->
+
+    <script src="{{static_url('js/popper.js')}}"></script>
+    <script src="{{static_url('js/bootstrap.min.js')}}"></script>
+    <script src="{{static_url('js/select2.min.js')}}"></script>
+    <script src="{{static_url('js/perfect-scrollbar.min.js')}}"></script>
+	<script src="{{static_url('js/tan_classie.js')}}"></script>
+	<script src="{{static_url('js/tan_modalEffects.js')}}"></script>
+	<script src="{{static_url('js/tan_cssParser.js')}}"></script>
+
+	<script src="{{static_url('input/classie.js')}}"></script>
+
+    <script>
+        function server_error() {
+            $.message(
+                    {
+                        message: "server domain error!",
+                        type: "error",
+                        time: 5000
+
+                    }
+                );
+        }
+
+
+        function on_ssh(e) {
+             if (document.getElementById('is_run_{id}'.format({id: e.id})).innerText === '×'){
+                server_error();
+            } else{
+                window.location.href = '/html/Host/{id}/WebSshIndex/'.format({id: e.id});
+            }
+        }
+
+        function onClickSchedul(e) {
+            if (document.getElementById('is_run_{id}'.format({id: e.id})).innerText === '×'){
+                server_error();
+            } else{
+                window.location.href = '/html/Host/{id}/spider/Schedul/'.format({id: e.id});
+            }
+        }
+
+		$('.js-pscroll').each(function(){
+			var ps = new PerfectScrollbar(this);
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+        if (document.getElementById("0")){
+            $.message({
+                message:'No links to any server !',
+                type:'info',
+                time: 5000
+            });
+        }
+
+		function onClickDeleteProject(e) {
+			// 获取主机project
+            if (document.getElementById('is_run_{id}'.format({id: e.id})).innerText === '×'){
+                server_error();
+            }else{
+                $.ajax({
+                    url: Option.list_project_url.format({host_id: e.id}),
+                    dataType: "json",
+                    type: "GET",
+                    success: function (data) {
+                        var tables = '';
+                        var css_str = 'z-index: 9999999999;width: 50%;display: inline-block;vertical-align: middle;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;-o-user-select: none;user-select: none;-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;border-radius: .25em;position: relative;padding: 0.5rem 3em 0.5rem 1em;background: #252525;border: .18em solid #151515;cursor: pointer;/* color: #b9b9b9; */text-decoration: none;white-space: nowrap;max-width: 100%;overflow: hidden;text-overflow: ellipsis;'
+                        tables += '<div class="md-modal md-effect-1" id="modal-3">';
+                        tables += '<div class="md-content">';
+                        tables += '<h3 style="background: rgba(0,0,0,0);">Delete server project</h3>';
+                        tables += '<select id="select_text" style="{css}">'.format({css:css_str});
+                        for (var index = 0; index < data.project.length; index ++){
+                            tables += '<option value="{name}" onclick="select_list(this)" style="font-size: 20px;" id="{project_name}_{id}">{project_name}</option>'.format({project_name: data.project[index], id: e.id});
+                        }
+                        tables += '</select>';
+                        tables += '<button onclick="ddddd(this)" style="width: 15%;display: inline; margin-left: 10%;" id="{host_id}">Delete</button>'.format({host_id:e.id});
+                        tables += '<button onclick="ddd(this)" style="width: 15%;display: inline;margin-left: 1.5%;">Cancel</button>';
+                        tables += '</div></div>';
+                        $('#delete_host_project')[0].innerHTML = tables;
+                        $('#modal-3')[0].className = 'md-modal md-effect-1 md-show';
+                    }
+                })}
+        }
+
+		function ddddd(e) {
+
+			var host_id = e.id;
+			project_name = $('#select_text option:selected')[0].innerHTML;
+			$.ajax({
+				url: Option.delete_project_url.format({host_id: host_id, project_name: project_name}),
+				dataType: "json",
+				type: "DELETE",
+				success: function (data) {
+				    $.message('Delete success');
+					$('#select_text option:selected')[0].remove();
+					$('#modal-3')[0].className = 'md-modal md-effect-1';
+
+                }
+			})
+        }
+
+
+		function ddd(e) {
+			$('#modal-3')[0].className = 'md-modal md-effect-1';
+        }
+
+
+
+        function on_fush(){
+            $('#modal-1')[0].className = 'md-modal md-effect-1';
+            $('#modal-2')[0].className = 'md-modal md-effect-1';
+            document.getElementsByClassName('input input--jiro input--filled').className = 'input input--jiro';
+
+        }
+
+
+		function ifNull(){
+            if (document.getElementById('1') === null){
+                $.message({
+                    message:'No server are managed !',
+                    type:'info',
+                    time: 5000
+                });
+            }
+
+        }
+
+
+        function conf_host(e) {
+		    // 向获取需配置的主机信息进行填充
+            host_id = e.prevAll()[1].id;
+            $.ajax({
+                url: Option.modify_Conf_url.format({host_id:host_id}),
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (! data.data){
+                        $.message('Server info obtain  fail');
+                    } else{
+                        [].slice.call( document.querySelectorAll( 'input.input__field' )).forEach( function( inputEl ) {
+
+                        switch (inputEl.id){
+                            case 'host_id':
+                                inputEl.parentNode.className = 'input input--jiro input--filled';
+                                inputEl.name = host_id;
+                                inputEl.value = data.data.host;
+                                break;
+                            case 'host_name':
+                                inputEl.parentNode.className = 'input input--jiro input--filled';
+                                inputEl.value = data.data.name;
+                                break;
+                            case 'scrapy_name':
+                                inputEl.parentNode.className = 'input input--jiro input--filled';
+                                inputEl.value = data.data.scrapyd_name;
+                                break;
+                            case 'scrapy_password':
+                                inputEl.parentNode.className = 'input input--jiro input--filled';
+                                inputEl.value = data.data.scrapyd_password;
+                                break;
+                            case 'ssh_name':
+                                inputEl.parentNode.className = 'input input--jiro input--filled';
+                                inputEl.value = data.data.host_ssh_name;
+                                break;
+                            case 'ssh_password':
+                                inputEl.parentNode.className = 'input input--jiro input--filled';
+                                inputEl.value = data.data.host_ssh_password;
+                                break;
+                            case 'host_port':
+                                inputEl.parentNode.className = 'input input--jiro input--filled';
+                                inputEl.value = data.data.port;
+                                break;
+                        }
+                    });}
+                }
+            })
+        }
+
+
+        function onClickDelete(obj){
+            var host_id = obj.id;
+            $.ajax({
+                url: Option.delete_host_url.format({host_id: host_id}),
+                type: "DELETE",
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    $.message('Delete success');
+                    obj.parentNode.parentNode.parentNode.removeChild(obj.parentNode.parentNode);
+                    if (document.getElementById('1') === null) {
+                         location.reload();
+                    }
+                },
+                error: function () {
+                    //访问出错弹出
+					$.message({
+						message:'Delete fail',
+						type:'error'
+					});
+
+                }
+            });
+        }
+
+
+        function on_old_save() {
+            // 更新配置
+            var data = {};
+            var host_id= 0;
+			[].slice.call( document.querySelectorAll( 'input.input__field' )).forEach( function( inputEl ) {
+				if( inputEl.value.trim() !== '' ) {
+					classie.add( inputEl.parentNode, 'input--filled' );
+				}
+
+				switch (inputEl.id){
+                    case 'host_id':
+                        data["host"] = inputEl.value;
+                        host_id = inputEl.name;
+                        break;
+                    case 'host_name':
+                        data["name"] = inputEl.value;
+                        break;
+                    case 'scrapy_name':
+                        data["scrapyd_name"] = inputEl.value;
+                        break;
+                    case 'scrapy_password':
+                        data["scrapyd_password"] = inputEl.value;
+                        break;
+                    case 'ssh_name':
+                        data["host_ssh_name"] = inputEl.value;
+                        break;
+                    case 'ssh_password':
+                        data["host_ssh_password"] = inputEl.value;
+                        break;
+                    case 'host_port':
+                        data["port"] = inputEl.value;
+                        break;
+                }
+            });
+
+            $.ajax({
+                url: Option.modify_Conf_url.format({host_id:host_id}),
+                type: "POST",
+                dataType: "json",
+                data: data,
+                success: function (data) {
+                    if (data.data){
+                        $.message('Save success');
+                    }
+                }
+            })
+        }
+
+
+        function on_save() {
+            var data = {};
+			[].slice.call( document.querySelectorAll( 'input.input__field' )).forEach( function( inputEl ) {
+				if( inputEl.value.trim() !== '' ) {
+					classie.add( inputEl.parentNode, 'input--filled' );
+				}
+				switch (inputEl.id){
+                    case 'new_host_id':
+                        data["host_id"] = inputEl.value;
+                        break;
+                    case 'new_host_name':
+                        data["host_name"] = inputEl.value;
+                        break;
+                    case 'new_scrapy_name':
+                        data["scrapy_name"] = inputEl.value;
+                        break;
+                    case 'new_scrapy_password':
+                        data["scrapy_password"] = inputEl.value;
+                        break;
+                    case 'new_ssh_name':
+                        data["ssh_name"] = inputEl.value;
+                        break;
+                    case 'new_ssh_password':
+                        data["ssh_password"] = inputEl.value;
+                        break;
+                    case 'new_host_port':
+                        data["host_port"] = inputEl.value;
+                        break;
+                }
+            });
+            $.ajax({
+                url: Option.new_host_url,
+                type: "POST",
+                dataType: "json",
+                data: data,
+                success: function (data) {
+                    if (data.data){
+                        $.message('Save success');
+                        location.reload();
+                    }
+                }
+            })
+        }
+
+
+        (function() {
+				// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+				if (!String.prototype.trim) {
+					(function() {
+						// Make sure we trim BOM and NBSP
+						var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+						String.prototype.trim = function() {
+							return this.replace(rtrim, '');
+						};
+					})();
+				}
+
+				[].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+					// in case the input is already filled..
+					if( inputEl.value.trim() !== '' ) {
+						classie.add( inputEl.parentNode, 'input--filled' );
+					}
+
+					// events:
+					inputEl.addEventListener( 'focus', onInputFocus );
+					inputEl.addEventListener( 'blur', onInputBlur );
+				} );
+
+				function onInputFocus( ev ) {
+					classie.add( ev.target.parentNode, 'input--filled' );
+				}
+
+				function onInputBlur( ev ) {
+					if( ev.target.value.trim() === '' ) {
+						classie.remove( ev.target.parentNode, 'input--filled' );
+					}
+				}
+			})();
+	</script>
+	<script src="{{static_url('js/host_list_main.js')}}"></script>
+
+{% end %}
+

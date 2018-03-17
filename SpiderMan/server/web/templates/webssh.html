@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+    <title>{% block title %}webssh{% end %}</title>
+    {% block uu%}
+    <link rel='shortcut icon' type='image/x-icon' href="{{static_url('images/favicon.ico')}}"/>
+    <link rel="stylesheet" href="{{static_url('css/pure-min.css') }}">
+    <link href="{{static_url('css/tooltip.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{static_url('css/main.css')}}" rel="stylesheet" type="text/css"/>
+    {% end %}
+
+
+
+{% block body %}
+<div id="term" align="center"></div>
+<script src="{{static_url('js/term.js')}}"></script>
+<script src="{{static_url('js/ws.js')}}"></script>
+<script src="{{static_url('js/formvalid.js')}}"></script>
+<script src="{{static_url('js/main.js')}}"></script>
+<script type="application/javascript">
+    var remember = true;
+    $.ajax(
+        {
+            url: Option.api_host_ssh_url.format({host_id: window.location.href.split('/')[5]}),
+            success: function(data, status){
+                var options = {
+                    host: data.data.host,
+                    port: 22,
+                    username: data.data.username,
+                    ispwd: true,
+                    secret: data.data.secret,
+                    hostname: data.data.host
+                };
+
+                if (remember) {
+                    store(options)
+                }
+                if (check()) {
+                    openTerminal(options)
+                } else {
+                    for (var key in validResult) {
+                        if (!validResult[key]) {
+                            alert(errorMsg[key]);
+                            break;
+                        }
+                    }
+                }
+
+                }
+            }
+    );
+
+</script>
+{% end %}

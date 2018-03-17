@@ -1,0 +1,314 @@
+
+{% extends "base.html" %}
+{% block title %}Server schedul{% end %}
+{% block uu %}
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_bootstrap.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_font-awesome.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_animate.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_select2.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_perfect-scrollbar.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_util.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/host_list_main.css')}}">
+    <link href="{{static_url('css/bootstrap.min.css')}}" rel="stylesheet" />
+{% end %}
+
+
+{% block body %}
+    <!--run spider-->
+    <div class="limiter" style="margin-top: 55px;width: 50%;float: left;max-height: 88%;">
+        <div class="table100 ver3 m-b-110">
+            <div class="table100-head">
+                <table>
+                    <thead>
+                        <tr class="row100 head">
+                            <th class="cell100 column2" style="margin-left: 20px;width: 30%;text-align:center;">Spider name</th>
+                            <th class="cell100 column3" style="width: 30%;text-align:center;">Start time</th>
+                            <th class="cell100 column3" style="width: 30%;text-align:center;">End time</th>
+                            <th class="cell100 column3" style="text-align: center;width: 30%;">Option</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="table100-body js-pscroll">
+                <table>
+                    <tbody id="run_spider"></tbody>
+                </table>
+            </div>
+        </div>
+	</div>
+
+<!--===============================================================================================-->
+    <!--all spider-->
+    <div class="limiter" style="margin-top: 55px;width: 50%;float: right;max-height: 88%;">
+        <div class="table100 ver3 m-b-110"  >
+            <div class="table100-head">
+                <table>
+                    <thead>
+                        <tr class="row100 head">
+                            <th class="cell100 column2" style="margin-left: 20px;text-align: center;">Spider name</th>
+                            <th class="cell100 column2" style="text-align: center;">Option</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="table100-body js-pscroll">
+                <table>
+                    <tbody id="all_spider">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<!--===============================================================================================-->
+
+<script src="{{static_url('js/popper.js')}}"></script>
+<script src="{{static_url('js/bootstrap.min.js')}}"></script>
+<script src="{{static_url('js/select2.min.js')}}"></script>
+<script src="{{static_url('js/perfect-scrollbar.min.js')}}"></script>
+<script src="{{static_url('js/host_list_main.js')}}"></script>
+
+<script>
+    $('.js-pscroll').each(function(){
+        var ps = new PerfectScrollbar(this);
+
+        $(window).on('resize', function(){
+            ps.update();
+        })
+    });
+
+    function removeAllChild(dome) {
+        var div = document.getElementById(dome);
+        while(div.hasChildNodes()) //当div下还存在子节点时 循环继续
+        {
+            div.removeChild(div.firstChild);
+        }
+    }
+
+    function getCookie(name) {
+        var r = document.cookie.match("\\b"+name+"=([^:]*)\\b");
+        return r ? r[1] : undefined;
+    }
+
+
+    var host_id = window.location.href.split('/')[5], spider_id;
+
+    list_project = [];
+
+    $.ajax({
+        url: Option.list_project_url.format({host_id:host_id}),
+        type: "GET",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+                list_project = data.project;
+            },
+        error: function () {
+            window.location.href = document.referrer;
+        }
+    });
+
+    function get_list_job(value,index,array) {
+        var tables = '';
+        var finished_tables = '';
+        $.ajax({
+            url: Option.list_job_url.format({host_id: host_id, project_name:value}),
+            type: "GET",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                for (var l=0; l < data.data.running.length;l++) {
+                    var timestamp2 = Date.parse(new Date(data.data.running[l].start_time.split('.')[0]));
+                    var timestamp = (new Date()).valueOf();
+                    tables += '<tr class="row100 body" >';
+                    tables += '<td class="cell100 column3" id="{id},,{spider_name},,{project_name}"  style="text-align:center;width: 30%;">'.format({id: data.data.running[l].id, spider_name: data.data.running[l].spider,project_name: value});
+                    tables += '<a onclick="log_spider($(this))">';
+                    tables += data.data.running[l].spider;
+                    tables += '</a></td>';
+                    tables += '<td class="cell100 column3" style="text-align:center;width: 30%;">';
+                    tables += data.data.running[l].start_time.split('.')[0] + '</td>';
+                    tables += '<td class="cell100 column3" style="text-align:center;width: 30%;">Runing time:';
+                    tables += String((timestamp - timestamp2) / 1000) + ' S</td>' ;
+                    tables += '<td class="cell100 column3" style="text-align:center;width: 30%;">';
+                    tables += '<a  onclick="onClickStop(this)" class="btn btn-success" id="{id}"'.format({id:data.data.running[l].id});
+                    tables += 'host_id="{host_id}"'.format({host_id: host_id}) ;
+                    tables += 'name="{name},,{value}"'.format({name:data.data.running[l].spider, value:value}) ;
+                    tables += 'style="color: #f8f6ff;margin-left: 10%;margin-top: 1%;">Stop</a>';
+                    tables += '</td></tr>';
+                }
+                for (var l = 0; l < data.data.finished.length; l++) {
+                    finished_tables += '<tr class="row100 body">' +
+                        '<td class="cell100 column2" style="text-align:center;width: 30%;" id="{id},,{spider_name},,{project_name}"><a onclick="log_spider($(this))">'.format({
+                                id: data.data.finished[l].id, spider_name: data.data.finished[l].spider,project_name: value
+                        }) + data.data.finished[l].spider + '</a></td>' +
+                        '<td class="cell100 column2" style="text-align:center;width: 30%;">' + data.data.finished[l].start_time.split('.')[0] + '</td>' +
+                        '<td class="cell100 column2" style="text-align:center;width: 30%;">' + data.data.finished[l].end_time.split('.')[0] + '</td>' +
+                        '<td class="cell100 column1" style="text-align:center;width: 30%;" style="margin-left: 5%;margin-top: 1%;margin-left: 5%;text-align:center;">' + '×' + '</td></tr>'
+                }
+            }
+        });
+        return  tables + finished_tables;
+    }
+
+
+    function log_spider(e) {
+        var _d = e.parent()[0].id;
+        var spider_id = _d.split(',,')[0];
+        var spider_name = _d.split(',,')[1];
+        var project_anme = _d.split(',,')[2];
+
+        if (document.getElementById("new_table")){
+            divs = document.getElementsByTagName('div');
+            for (var l=0; l< divs.length;l++){
+                if (divs[l].id == 'new_table'){
+                    divs[l].style.display = "none";
+                }
+            }
+        }
+        window.location.href =  Option.spider_log_url.format(
+                {
+                    host_id: host_id, project_name: project_anme, spider_name: spider_name, spider_id: spider_id
+                }
+            );
+    }
+
+    function onClickStop(obj){
+        $.ajax({
+            url: Option.stop_spider_url.format(
+                    {
+                        host_id: $(this).attr('host_id'),
+                        project_name: event.target.name.split(',,')[1],
+                        job_id: event.target.id
+                    }
+                ),
+            type: "GET",
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                $.message('Success');
+                main_spider();
+            }
+        })
+    }
+
+
+    function html2Escape(sHtml) {
+        return sHtml.replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});
+    }
+
+
+    function run_spider() {
+
+        $.ajax({
+                url: Option.run_spider_url.format({host_id:host_id, project_name: event.target.id, spider_name: event.target.name}),
+                type: "GET",
+                async: true,
+                dataType: "json",
+                success: function (data) {
+                    $.message('Runing success');
+                }
+            })
+    }
+
+
+    function time_spider(e) {
+        project = e.parent().parent()[0].id.split(',,');
+        project_name = project[0];
+        spider_name = project[1];
+        if (document.getElementById("new_table")){
+            divs = document.getElementsByTagName('div');
+            for (var l=0; l< divs.length;l++){
+                if (divs[l].id == 'new_table'){
+                    divs[l].style.display = "none";
+                }
+            }
+        }
+//        removeAllId('new_table');
+        // 获取当前spider定时时间
+        $.ajax({
+            url: Option.get_timing_spider_url.format({
+                host_id: host_id, project_name: project_name, spider_name: spider_name
+            }),
+            type: "GET",
+            async: true,
+            dataType: "json",
+             success: function (data) {
+                 if (!data.data){
+                     // 没有设置定时任务
+
+                     e.parent().parent().after("<div id='new_table'><input value='Set task run interval (S)' id='input_{project_name}_{spider_name}' style='float: left;width: 80%;height: 20px;'><button onclick='set_time_spider($(this))' class='btn btn-success' style='float: right;width: 10%; height: 20px;padding: 0px 0 0;' name='{spider_name}' id='{project_name}'>Submit</button></div>".format(
+                         {
+                             project_name: project_name, spider_name: spider_name,
+
+                         }
+                     ))
+                 }else {
+                     // 已经设置定时任务
+                     e.parent().parent().after("<div id='new_table'><input value='time: {time}' id='input_{project_name}_{spider_name}' style='float: left;width: 80%;height: 20px;'><button onclick='set_time_spider($(this))'  name='{spider_name}' class='btn btn-success'  style='float: right;width: 10%; height: 20px;padding: 0px 0 0;' id='{project_name}'>Modify</button></div>".format(
+                         {
+                             project_name: data.data.project_name, spider_name: data.data.spider_name,
+                              time: data.data.run_time
+                         }
+                     ))
+                 }
+             }
+        });
+
+
+    }
+
+
+    function set_time_spider(e){
+        time = document.getElementById('input_{project_name}_{spider_name}'.format({project_name:e[0].id, spider_name: e[0].name})).value;
+        url = Option.set_timing_spider_url.format({
+                host_id: host_id, project_name: e[0].id, spider_name: e[0].name, time: time
+            });
+        $.ajax({
+            // '/api/web/Host/{host_id}/Project/{project_name}/timing_spider/{spider_name}/{time}';
+            url: url, type: "POST", async: true, dataType: "json",
+            success: function (data) {
+                if (data.data){
+                    $.message('Set {spider_name} success! Run interval of {time} seconds'.format({spider_name: e[0].name, time:time}));
+                }
+            }
+        })
+    }
+
+
+    function get_all_spider() {
+        var tables = '';
+        list_project.map(function (value, index, array){
+            $.ajax({
+                url: Option.list_spider_url.format({host_id: host_id, project_name:value}),
+                type: "GET",
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    for (var i = 0; i < data.data.length; i++) {
+                        tables += '<tr class="row100 body" id="{project_name},,{spider_name}">'.format({spider_name: data.data[i], project_name:value});
+                        tables += '<td  class="cell100 column2" style="text-align:center;"><a onclick="time_spider($(this))">' + html2Escape(data.data[i]) + '</a></td>';
+                        tables += '<td class="cell100 column2" style="text-align:center;">';
+                        tables += '<a onclick="run_spider()" id="{value}" name="{name}" class="btn btn-success" '.format({value: value, name: data.data[i]});
+                        tables += 'style="color: #f8f6ff;margin-left: 10%;margin-top: 1%;">Runing</a>';
+                        tables += '</td></tr>';
+                    }
+                }
+            })
+        })
+        document.getElementById('all_spider').innerHTML = tables;
+    }
+
+
+    function main_spider(){
+        // 获取父元素删除子元素
+
+        texts = list_project.map(get_list_job);
+        removeAllChild('run_spider');
+        document.getElementById('run_spider').innerHTML = texts.join('');
+    }
+    get_all_spider();
+    main_spider();
+    setInterval("main_spider()", "5000");
+</script>
+
+{% end %}
