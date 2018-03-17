@@ -1,6 +1,8 @@
 import os
 import time
+import urllib
 import hashlib
+from threading import Thread
 from collections import defaultdict
 
 import requests
@@ -46,7 +48,7 @@ class BaseHandler(tornado.web.RequestHandler):
         data = {}
         for i in self.request.body.decode().split('&'):
             _, data[_] = i.split("=")
-
+            data[_] = urllib.parse.unquote(data[_])
         return data
 
     def post(self, *args, **kwargs):
@@ -220,8 +222,8 @@ class StartProjectHandler(BaseHandler):
         if project_info:
             self.write({"data": False, "msg": "project name exist"}, status_code=404)
             return
-        isrun = StartScrapyProject().run(project_name=project_data['project_name'],
-                                         project_dir=SpiderManConf.SPIDER_MAN_SCRAPY_FILE_PATH)
+        Thread()
+        isrun = StartScrapyProject().run(project_name=project_data['project_name'], project_dir=SpiderManConf.SPIDER_MAN_SCRAPY_FILE_PATH)
         if not isrun:
             self.write({"data": False,
                         "msg": "project name sxist.see {} dir".format(SpiderManConf.SPIDER_MAN_SCRAPY_FILE_PATH)},
@@ -236,12 +238,12 @@ class StartProjectHandler(BaseHandler):
         if isrun is False:
             self.write({"data": False, "msg": "build project spider error"}, status_code=500)
             return
+        self.write({"data": {"project_name": project_data['project_name']}, "msg": ""})
         Project.create(
             create_time=time.time(), project_path=SpiderManConf.SPIDER_MAN_SCRAPY_FILE_PATH,
             project_name=project_data['project_name'], description=project_data.get('description', ''),
             update_time=time.time(), project_version=1
         ).save()
-        self.write({"data": {"project_name": project_data['project_name']}, "msg": ""})
 
 
 class SpiderCancelHandler(BaseHandler):
@@ -566,7 +568,7 @@ class DeleteLocationProjectHandler(BaseHandler):
             return
         try:
 
-            if not delete_scrapy_project(project_info.project_path):
+            if not delete_scrapy_project(project_info.project_path, project_name):
                 self.write({"data": False, "msg": "server error"})
                 self.set_status(status_code=500)
                 return

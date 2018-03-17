@@ -1,3 +1,4 @@
+import logging
 from scrapy.commands.genspider import *
 from scrapy.utils.project import get_project_settings
 from scrapy.crawler import CrawlerProcess
@@ -24,7 +25,6 @@ class GenSpider(Command):
         :param dump: default None
         :param template: default basic
         :param force: defaultNone
-
     """
 
     def run(self, **kwargs):
@@ -69,8 +69,8 @@ class GenSpider(Command):
             self.settings['SPIDER_MODULES'] = self.settings['NEWSPIDER_MODULE']
             self.settings['SETTINGS_MODULE'] = '{project_name}.settings'.format(project_name=kwargs['project_name'])
             self._genspider(module, name, domain, opts.template, template_file)
-            if opts.edit:
-                self.exitcode = os.system('scrapy edit "%s"' % name)
+            # if opts.edit:
+            #     self.exitcode = os.system('scrapy edit "%s"' % name)
 
     def _genspider(self, module, name, domain, template_name, template_file):
         """Generate the spider module, based on the given template"""
@@ -87,6 +87,7 @@ class GenSpider(Command):
             spiders_module = import_module(self.settings['NEWSPIDER_MODULE'])
             spiders_dir = abspath(dirname(spiders_module.__file__))
         else:
+
             spiders_module = None
             spiders_dir = "."
         spider_file = "%s.py" % join(spiders_dir, module)
@@ -94,5 +95,24 @@ class GenSpider(Command):
         render_templatefile(spider_file, **tvars)
         if spiders_module:
             return True
+
+
+# class GenSpider_(object):
+#
+#     model_template = {
+#         "basic": "SpiderMan/model/scrapy_template/spider.tp",
+#         "crawl":"SpiderMan/model/scrapy_template/crawl.tp",
+#         "csvfeed": "SpiderMan/model/scrapy_template/csvf.tp",
+#         "xmlfeed": "SpiderMan/model/scrapy_template/xml.tp"
+#     }
+#
+#     def run(self, **kwargs):
+#         template = self.model_template[kwargs['template']]
+#         spider_name = kwargs['spider_name']
+#         Spider_name = kwargs['spider_name'].capitalize()
+#         domain = kwargs['domain']
+#         path =
+
+
 
 

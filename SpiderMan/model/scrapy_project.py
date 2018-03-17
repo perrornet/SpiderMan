@@ -24,14 +24,14 @@ def file_exist(file_path):
         time.sleep(0.01)
 
 
-def delete_scrapy_project(file_path):
+def delete_scrapy_project(file_path, project_name):
     """delete location scrapy project
     :param file_path: scrapy project path
     :return: bool
     """
     try:
-        path_object = path.Path(file_path)
-        path_object.rmtree(file_path)
+        path_object = path.Path(os.path.join(file_path, project_name))
+        path_object.rmtree(project_name)
         return True
     except:
         import traceback
