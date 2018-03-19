@@ -1,3 +1,0 @@
-[console_scripts]
-SpiderMan = SpiderMan.Cmd:main
-

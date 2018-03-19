@@ -34,15 +34,15 @@ PRIMARY KEY (`id`),
 );"""
 
 
-project_sql = """CREATE TABLE `NewTable` (
+project_sql = """CREATE TABLE `Project` (
 `id`  int NOT NULL ,
 `host_id`  int NULL ,
-`project_name`  char(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-`description`  char(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL ,
+`project_name`  char(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`description`  char(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL ,
 `create_time`  int NOT NULL ,
 `update_time`  int NOT NULL ,
-`project_path`  char(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-`project_version`  char(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL ,
+`project_path`  char(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`project_version`  char(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL ,
 PRIMARY KEY (`id`)
 );"""
 
