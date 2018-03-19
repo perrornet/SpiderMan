@@ -16,17 +16,28 @@ function openTerminal(options) {
         onConnect: function () {
             client.sendInitData(options);
             client.sendClientData('\r');
-            console.debug('connection established');
+
         },
         onClose: function () {
-            term.write("\rconnection closed")
-            console.debug('connection reset by peer');
-            $('term').hide()
+            $.message({
+                    message: 'connection closed !',
+                    type: "info",
+                    showClose: true
+                });
+            $('#term')[0].innerHTML = '';
         },
         onData: function (data) {
+            if (data.indexOf('code=404') != -1){
+                $('#term')[0].innerHTML = '';
+                $.message({
+                    message: data.split('message')[1],
+                    type: "error",
+                    time: 5000
+                });
+            }else{
+                term.write(data);
+            }
 
-            term.write(data);
-            console.debug('get data:' + data);
         }
     })
 }

@@ -316,7 +316,7 @@
                             tables += '<td class="cell100 column3" style="text-align: center;">  </td>';
                             tables += '<td class="cell100 column2" style="text-align: center;">  </td>';
                             tables += '<td class="cell100 column1" style="text-align: center;">';
-                            tables += '<button class="btn btn-success md-trigger" onclick="on_start($(this))" data-modal="modal-1" style="margin-left: 38%;margin-top: 1%;">新建</button>';
+                            tables += '<button class="btn btn-success md-trigger" onclick="on_start($(this))" data-modal="modal-1" style="margin-left: 38%;margin-top: 1%;">New project</button>';
                             document.getElementById("def_bu").style.display="none";
                             document.getElementById('project').innerHTML = tables;
 
@@ -345,7 +345,7 @@
                         data["project_name"] = inputEl.value;
                         break;
                     case 'project_description':
-                        data["project_description"] = inputEl.value;
+                        data["description"] = inputEl.value;
                         break;
                     case 'scrapyd_model':
                         data["scrapyd_model"] = inputEl.value;

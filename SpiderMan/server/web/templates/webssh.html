@@ -24,12 +24,11 @@
                 var options = {
                     host: data.data.host,
                     port: 22,
-                    username: data.data.username,
+                    username: data.data.host_ssh_name,
                     ispwd: true,
-                    secret: data.data.secret,
+                    secret: data.data.host_ssh_password,
                     hostname: data.data.host
                 };
-
                 if (remember) {
                     store(options)
                 }

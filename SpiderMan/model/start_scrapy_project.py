@@ -25,9 +25,9 @@ class StartScrapyProject(Command):
                 'pidfile': None, 'set': [], 'pdb': None
             }
 
-        if not self._is_valid_name(project_name):
-            self.exitcode = 1
-            return False
+        # if not self._is_valid_name(project_name):
+        #     self.exitcode = 1
+        #     return False
 
         self._copytree(self.templates_dir, abspath(project_dir))
         move(join(project_dir, 'module'), join(project_dir, project_name))

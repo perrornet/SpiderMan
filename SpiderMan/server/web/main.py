@@ -26,7 +26,7 @@ from SpiderMan.server.web.api import (
     SpiderLogHandler, SpiderCancelHandler, RunSpiderHandler,
     DeleteProjectHandler, StartProjectHandler,
     FileCodeHandler, UpdateFileHandler, DeleteHostHandler,
-    HostHomeHandler, SshHandler, ModifyConfHandler,
+    HostHomeHandler, ModifyConfHandler,
     StopSpiderHandler, SetTimingHandler, GetTimingHandler,
     HostSshHandler, LocationListProjectHandler, NewHostHandler,
     DeleteLocationProjectHandler, DeployProjectHandler,
@@ -99,8 +99,8 @@ def url_conf():
         (r'^/api/web/Project/(\S+)/file_code/(\S+)/$', FileCodeHandler),
         # 更新文件
         (r'^/api/web/Project/(\S+)/update_file/(\S+)/$', UpdateFileHandler),
-        # ssh
-        (r'^/api/web/Ssh/(\S+)/$', SshHandler),
+        # # ssh
+        # (r'^/api/web/Ssh/(\S+)/$', SshHandler),
         # 设置指定主机中指定项目的指定spider 定时任务
         (r'^/api/web/Host/(\S+)/Project/(\S+)/timing_spider/(\S+)/(\S+)/$', SetTimingHandler),
 

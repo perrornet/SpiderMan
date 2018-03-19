@@ -61,3 +61,4 @@ class ScrapydAPI_(ScrapydAPI):
         url = urljoin(self.target, '/logs/{project_name}/{spider_name}/{spider_id}.log'. \
                       format(project_name=project_name, spider_name=spider_name, spider_id=spider_id))
         return self.client.get(url)
+
