@@ -276,8 +276,8 @@
                         tables += '<div class="md-content">';
                         tables += '<h3 style="background: rgba(0,0,0,0);">Delete server project</h3>';
                         tables += '<select id="select_text" style="{css}">'.format({css:css_str});
-                        for (var index = 0; index < data.project.length; index ++){
-                            tables += '<option value="{name}" onclick="select_list(this)" style="font-size: 20px;" id="{project_name}_{id}">{project_name}</option>'.format({project_name: data.project[index], id: e.id});
+                        for (var index = 0; index < data.data.length; index ++){
+                            tables += '<option value="{name}" onclick="select_list(this)" style="font-size: 20px;" id="{project_name}_{id}">{project_name}</option>'.format({project_name: data.data[index], id: e.id});
                         }
                         tables += '</select>';
                         tables += '<button onclick="ddddd(this)" style="width: 15%;display: inline; margin-left: 10%;" id="{host_id}">Delete</button>'.format({host_id:e.id});
