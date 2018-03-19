@@ -49,19 +49,22 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         self.put_client()
 
     def on_message(self, message):
-        bridge = self.get_client()
-        client_data = ClientData(message)
-        if self._is_init_data(client_data):
-            print(client_data.data)
-            if self._check_init_param(client_data.data):
-                bridge.open(client_data.data)
-                logging.info('connection established from: %s' % self._id())
+        try:
+            bridge = self.get_client()
+            client_data = ClientData(message)
+
+            if self._is_init_data(client_data):
+                if self._check_init_param(client_data.data):
+                    bridge.open(client_data.data)
+                    logging.info('connection established from: %s' % self._id())
+                else:
+                    self.remove_client()
+                    logging.warning('init param invalid: %s' % client_data.data)
             else:
-                self.remove_client()
-                logging.warning('init param invalid: %s' % client_data.data)
-        else:
-            if bridge:
-                bridge.trans_forward(client_data.data)
+                if bridge:
+                    bridge.trans_forward(client_data.data)
+        except Exception as f:
+            self.write_message("code=404message:{}".format(f))
 
     def on_close(self):
         self.remove_client()
