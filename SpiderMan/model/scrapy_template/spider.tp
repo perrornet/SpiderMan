@@ -5,7 +5,7 @@ import scrapy
 class {Spider_name}Spider(scrapy.Spider):
 
     name = '{spider_name}'
-    allowed_domains = ['{domain}']
+    allowed_domains = ['{domain_type}']
     start_urls = ['{domain}']
     def parse(self, response):
         pass
