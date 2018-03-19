@@ -2,7 +2,6 @@ from setuptools import setup, find_packages
 import os
 import SpiderMan
 
-
 def read_file():
     with open('README.rst', encoding='utf-8') as f:
         return f.read()
