@@ -23,7 +23,6 @@ def package_files(dirs):
             [paths.append(os.path.join(_path[0], i)) for i in _path[2] if '.git' not in _path[0]]
     return paths
 
-
 setup(
     name='SpiderMan',
     version=SpiderMan.version(),

@@ -1,22 +1,19 @@
-# -*- coding:utf-8 -*-
-import os
+"""一些web服务需要的要程序
+全局配置, mysql连接池, scrapy生成
+"""
 import sys
-from os.path import (
-    expanduser, isdir, join
-)
+import os
+from os.path import isdir
+from os.path import join
+from os.path import expanduser
 from importlib import import_module
 
-home_path = expanduser('~')
-if not isdir(join(home_path, "SpiderMan")):
-    os.mkdir(join(home_path, "SpiderMan"))
-if not isdir(join(home_path, "SpiderMan", 'project')):
-    os.mkdir(join(home_path, "SpiderMan", 'project'))
-if not isdir(join(home_path, "SpiderMan", 'project', 'scrapys')):
-    os.mkdir(join(home_path, "SpiderMan", 'project', 'scrapys'))
-if not isdir(join(home_path, "SpiderMan", 'db')):
-    os.mkdir(join(home_path, "SpiderMan", 'db'))
+HOME_PATH = expanduser('~')
+if not isdir(join(HOME_PATH, "SpiderMan")):
+    os.makedirs(join(HOME_PATH, "SpiderMan", 'db'))
+    os.makedirs(join(HOME_PATH, "SpiderMan", 'project', 'scrapys'))
 
-conf = """
+CONF = """
 MYSQL = False
 SQLLITE = True
 HOST = '0.0.0.0'
@@ -28,14 +25,16 @@ MYSQLPASSWORD = ''
 
 
 class SpiderManConf(object):
-
-    SPIDER_MAN_PATH = join(home_path, "SpiderMan")
+    """全局配置
+    如果mysql == false 默认使用sqllite
+    """
+    SPIDER_MAN_PATH = join(HOME_PATH, "SpiderMan")
     SPIDER_MAN_DB_PATH = join(SPIDER_MAN_PATH, 'db', 'SpiderMan.db')
     SPIDER_MAN_SCRAPY_FILE_PATH = join(SPIDER_MAN_PATH, 'project', 'scrapys')
     SPIDER_MAN_CONF_PY = join(SPIDER_MAN_PATH, 'SpiderManConf.py')
     if not os.path.isfile(SPIDER_MAN_CONF_PY):
-        with open(SPIDER_MAN_CONF_PY, 'w') as f:
-            f.write(conf)
+        with open(SPIDER_MAN_CONF_PY, 'w') as fp:
+            fp.write(CONF)
         MYSQL = False
         SQLLITE = True
         HOST = '0.0.0.0'
@@ -45,9 +44,10 @@ class SpiderManConf(object):
         MYSQLPASSWORD = ''
     else:
         sys.path.append(SPIDER_MAN_PATH)
-        o = import_module('SpiderManConf')
-        MYSQL, SQLLITE, HOST, PORT = o.MYSQL, o.SQLLITE, o.HOST, o.PORT
-        PORT, MYSQLHOST, MYSQLUSER, MYSQLPASSWORD  = o.PORT, o.MYSQLHOST, o.MYSQLUSER, o.MYSQLPASSWORD
+        obj = import_module('SpiderManConf')
+        MYSQL, SQLLITE, HOST, PORT = obj.MYSQL, obj.SQLLITE, obj.HOST, obj.PORT
+        MYSQLHOST, MYSQLUSER, MYSQLPASSWORD = obj.MYSQLHOST, obj.MYSQLUSER, obj.MYSQLPASSWORD
+
     SCRAPY_SETUP_CODE = """# -*- coding:utf-8 -*-
 # create for SpiderMan
 from setuptools import setup, find_packages
@@ -59,7 +59,8 @@ setup(
     entry_points={'scrapy':['settings=%(name)s.settings']}
 )
     """
-SpiderManConf()
+
+
 
 def getIp(domain):
     """get Website ip

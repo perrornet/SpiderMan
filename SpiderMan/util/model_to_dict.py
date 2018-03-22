@@ -69,36 +69,35 @@ class ModelsToDict(dict):
     def _models_dict(self):
         if not self._data:
             return {}
-        if hasattr(self._data, 'get_query_meta'):
-            model_fileds = self._data.get_query_meta()[0]
+        if isinstance(self._data, list):
+            # all
             return_data = []
-            for _model in self._data:
+            for objects in self._data:
+                fileds_object = objects.select().get_query_meta()[0]
                 tmp_dict = {}
-                for filed in model_fileds:
-                    if self.is_shield and filed.name in self.shield_field:
-                        # shield
+                for _filed in fileds_object:
+                    if _filed.name in self.shield_field and self.is_shield:
                         continue
-                    _ = getattr(_model, filed.name)
-                    _field_name = filed.name
-                    if filed.name in self.field_handle:
-                        _ = self.field_handle[filed.name](_)
-                    if filed.name in self.field_name:
+                    _ = getattr(objects, _filed.name)
+                    _field_name = _filed.name
+                    if _filed.name in self.field_handle:
+                        _ = self.field_handle[_filed.name](_)
+                    if _filed.name in self.field_name:
                         _field_name = self.field_name[_field_name]
                     tmp_dict[_field_name] = _
                 return_data.append(tmp_dict)
             return return_data
-
-        model_fileds = self._data.select().get_query_meta()[0]
+        fileds_object = self._data.select().get_query_meta()[0]
         return_data = {}
-        for filed in model_fileds:
-            if self.is_shield and filed.name in self.shield_field:
+        for _filed in fileds_object:
+            if self.is_shield and _filed.name in self.shield_field:
                 # shield
                 continue
-            _ = getattr(self._data, filed.name)
-            _field_name = filed.name
-            if filed.name in self.field_handle:
-                _ = self.field_handle[filed.name](_)
-            if filed.name in self.field_name:
+            _ = getattr(self._data, _filed.name)
+            _field_name = _filed.name
+            if _filed.name in self.field_handle:
+                _ = self.field_handle[_filed.name](_)
+            if _filed.name in self.field_name:
                 _field_name = self.field_name[_field_name]
             return_data[_field_name] = _
         return return_data
