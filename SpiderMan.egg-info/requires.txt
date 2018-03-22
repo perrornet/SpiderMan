@@ -1,8 +1,0 @@
-peewee==2.10.1
-tornado==4.5.2
-unipath==1.1
-requests==2.18.4
-python-scrapyd-api==2.0.1
-peewee==2.10.1
-docopt==0.6.2
-netifaces==0.10.6

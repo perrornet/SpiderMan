@@ -60,7 +60,7 @@ language = {
         edit: "Edit",
         add_project: "Add project",
         spider_name: "Spider name",
-        scrapy_base_model: "Scrapy base model",
+        scrapy_base_model: "Scrapy base util",
         start_url: "Start url",
         save: "Save",
         cancel: "Cancel",

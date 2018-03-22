@@ -2,41 +2,53 @@
 import time
 
 from tornado.log import app_log
+from SpiderMan.util.DataBase import MyManager
+from SpiderMan.server.web.models import Timing, Host, get_datebase
+from SpiderMan.Scrapyd_api.client import ScrapyApi
 
-from SpiderMan.server.web.models import Timing, Host
-from SpiderMan.model.scrapy_api import ScrapydAPI_, base_url
+app = MyManager(get_datebase())
 
 
-def scrapyd_object(host_id, ismodels=False):
-    host_info = Host.getOne(Host.id_ == host_id)
+def scrapyd_object(host_info, ismodels=False, timeout=10):
+    """get scrapy_spi object
+        cache scrapy_api object. cache time : 60
+    """
     if not host_info:
         return None
     if ismodels is True:
-        return ScrapydAPI_(base_url(host=host_info.host, port=host_info.port)), host_info
-    return ScrapydAPI_(base_url(host=host_info.host, port=host_info.port))
+        return ScrapyApi(target="http://{}:{}".format(host_info.host, host_info.port), timeout=timeout)
+    return ScrapyApi(target="http://{}:{}".format(host_info.host, host_info.port), timeout=timeout)
 
 
 cache = {}
 try:
     for i in Host.select():
-        cache[i.id] = scrapyd_object(host_id=i.id)
+        cache[i.id_] = scrapyd_object(i)
 except:
     pass
 
 
-def timing():
+# count = 1
+
+async def timing():
     """A simple polling timing program
     """
+    # global count
+
     if not cache:
         return
-    for i in Timing.select():
+
+    timing_info = await app.get(Timing.select())
+    if not timing_info:
+        return
+    for i in timing_info:
         if time.time() - i.last_time >= i.run_time:
             try:
-                cache[i.host_id].schedule(project=i.project_name, spider=i.spider_name)
-                Timing.update(last_time=time.time()).where(Timing.id_ == i.host_id)
-            except AttributeError:
-                Timing.delete().where(Timing.id_ == i.id_).execute()
-            except KeyError:
-                Timing.delete().where(Timing.host_id == i.host_id).execute()
+                await cache[i.host_id].schedule(project=i.project_name, spider=i.spider_name)
+                i.last_time = time.time()
+                await app.update(i, only=[Timing.last_time])
+                # count += 1
+                # print(count)
+                # app_log.info("runing timing task ok: {}".format(i.spider_name))
             except Exception as f:
                 app_log.error(f)

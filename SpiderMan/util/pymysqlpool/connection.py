@@ -13,7 +13,7 @@ import contextlib
 from pymysql.connections import Connection
 from pymysql.cursors import DictCursor, Cursor
 
-from SpiderMan.model.pymysqlpool.pool import PoolContainer, PoolIsFullException, PoolIsEmptyException
+from SpiderMan.util.pymysqlpool.pool import PoolContainer, PoolIsFullException, PoolIsEmptyException
 
 __version__ = '0.1'
 __author__ = 'Chris'

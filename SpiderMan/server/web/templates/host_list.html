@@ -65,19 +65,6 @@
 							<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Scrapyd password</span>
 						</label>
 					</span>
-
-						<span class="input input--jiro">
-						<input class="input__field input__field--jiro" type="text" id="new_ssh_name" />
-						<label class="input__label input__label--jiro" for="host_id">
-							<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server ssh name</span>
-						</label>
-					</span>
-						<span class="input input--jiro">
-						<input class="input__field input__field--jiro" type="text" id="new_ssh_password" />
-						<label class="input__label input__label--jiro" for="host_id">
-							<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server ssh password</span>
-						</label>
-					</span>
 					<button class="md-close btn btn-success" style="width: 30%;margin-top: 1%; height: 50%;" onclick="on_save()">Save</button>
 					<button class="md-close btn btn-success" style="width: 30%;margin-top: 1%; height: 50%;" onclick="on_fush(this)">Cancel</button>
 				</section>
@@ -117,19 +104,6 @@
 					<input class="input__field input__field--jiro" type="text" id="scrapy_password" />
 					<label class="input__label input__label--jiro" for="host_id">
 						<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Scrapyd password</span>
-					</label>
-				</span>
-
-					<span class="input input--jiro">
-					<input class="input__field input__field--jiro" type="text" id="ssh_name" />
-					<label class="input__label input__label--jiro" for="host_id">
-						<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server ssh name</span>
-					</label>
-				</span>
-					<span class="input input--jiro">
-					<input class="input__field input__field--jiro" type="text" id="ssh_password" />
-					<label class="input__label input__label--jiro" for="host_id">
-						<span class="input__label-content input__label-content--jiro" style="color: #abdde5;">Server ssh password</span>
 					</label>
 				</span>
 				<button class="md-close btn btn-success" style="width: 30%;margin-top: 1%; height: 50%;" onclick="on_old_save()">Save</button>
@@ -175,12 +149,11 @@
 								    <td class="cell100 column4" id="is_run_{{ key['id_'] }}">×</td>
                                 {% end %}
 								<td class="cell100 column1">
-
 									<button onclick="onClickDelete(this)" id="{{ key['id_'] }}" class="btn btn-success" style="margin-top: 1%;margin-left: 10%">Delete server</button>
-									<button onclick="onClickDeleteProject(this)" id="{{ key['id_'] }}" class="btn btn-success" style="margin-top: 1%;">Delete server project</button>
+									<button onclick="onClickDeleteProject(this)" id="{{ key['id_'] }}" class="btn btn-success" style="margin-top: 1%;">Delete project</button>
 									<button onclick="onClickSchedul(this)" id="{{ key['id_'] }}" class="btn btn-success" style="margin-top: 1%;">Schedul</button>
 									<button class="btn btn-success md-trigger" data-modal="modal-2" style="margin-top: 1%;" onclick="conf_host($(this))">Config</button>
-									<button class="btn btn-success "  style="margin-top: 1%;" id="{{ key['id_'] }}" onclick="on_ssh(this)">Ssh</button>
+                                    <button class="btn btn-success"  data-modal="modal-2" style="margin-top: 1%;" id="{{ key['id_'] }}" onclick="Monitor(this)">Monitor</button>
 								</td>
 							</tr>
 						{% end %}
@@ -213,7 +186,6 @@
 	<script src="{{static_url('js/tan_classie.js')}}"></script>
 	<script src="{{static_url('js/tan_modalEffects.js')}}"></script>
 	<script src="{{static_url('js/tan_cssParser.js')}}"></script>
-
 	<script src="{{static_url('input/classie.js')}}"></script>
 
     <script>
@@ -228,15 +200,9 @@
                 );
         }
 
-
-        function on_ssh(e) {
-             if (document.getElementById('is_run_{id}'.format({id: e.id})).innerText === '×'){
-                server_error();
-            } else{
-                window.location.href = '/html/Host/{id}/WebSshIndex/'.format({id: e.id});
-            }
+        function Monitor(e) {
+            $.message("unrealized");
         }
-
         function onClickSchedul(e) {
             if (document.getElementById('is_run_{id}'.format({id: e.id})).innerText === '×'){
                 server_error();
@@ -276,8 +242,8 @@
                         tables += '<div class="md-content">';
                         tables += '<h3 style="background: rgba(0,0,0,0);">Delete server project</h3>';
                         tables += '<select id="select_text" style="{css}">'.format({css:css_str});
-                        for (var index = 0; index < data.data.length; index ++){
-                            tables += '<option value="{name}" onclick="select_list(this)" style="font-size: 20px;" id="{project_name}_{id}">{project_name}</option>'.format({project_name: data.data[index], id: e.id});
+                        for (var index = 0; index < data.data.projects.length; index ++){
+                            tables += '<option value="{name}" onclick="select_list(this)" style="font-size: 20px;" id="{project_name}_{id}">{project_name}</option>'.format({project_name: data.data.projects[index], id: e.id});
                         }
                         tables += '</select>';
                         tables += '<button onclick="ddddd(this)" style="width: 15%;display: inline; margin-left: 10%;" id="{host_id}">Delete</button>'.format({host_id:e.id});
@@ -364,14 +330,6 @@
                                 inputEl.parentNode.className = 'input input--jiro input--filled';
                                 inputEl.value = data.data.scrapyd_password;
                                 break;
-                            case 'ssh_name':
-                                inputEl.parentNode.className = 'input input--jiro input--filled';
-                                inputEl.value = data.data.host_ssh_name;
-                                break;
-                            case 'ssh_password':
-                                inputEl.parentNode.className = 'input input--jiro input--filled';
-                                inputEl.value = data.data.host_ssh_password;
-                                break;
                             case 'host_port':
                                 inputEl.parentNode.className = 'input input--jiro input--filled';
                                 inputEl.value = data.data.port;
@@ -432,12 +390,6 @@
                     case 'scrapy_password':
                         data["scrapyd_password"] = inputEl.value;
                         break;
-                    case 'ssh_name':
-                        data["host_ssh_name"] = inputEl.value;
-                        break;
-                    case 'ssh_password':
-                        data["host_ssh_password"] = inputEl.value;
-                        break;
                     case 'host_port':
                         data["port"] = inputEl.value;
                         break;
@@ -476,12 +428,6 @@
                         break;
                     case 'new_scrapy_password':
                         data["scrapy_password"] = inputEl.value;
-                        break;
-                    case 'new_ssh_name':
-                        data["ssh_name"] = inputEl.value;
-                        break;
-                    case 'new_ssh_password':
-                        data["ssh_password"] = inputEl.value;
                         break;
                     case 'new_host_port':
                         data["host_port"] = inputEl.value;

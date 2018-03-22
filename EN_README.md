@@ -18,7 +18,7 @@
 <a name="Background introduction"></a>  
 ## BackgroundIntroduction 
 *SpiderMan* Based on Scrapy, scrapyd, scrapy-API, tornado spider distributed management framework.<br/>  
-*SpiderMan* Features include spider scheduling, Web side SSH, Web end code editor and Scrapy project construction and so on. 
+*SpiderMan* Features include spider scheduling, Web end code editor and Scrapy project construction and so on. 
   
 <a name="Project Introduction"></a>  
 ## ProjectIntroduction 
@@ -41,7 +41,7 @@
  ## UseAnEexample
 #### InterfaceIntroduction
 * HOME:  Because I really don't know what to put a few things on the front page, but if there is no home page, I always feel strange!<br> ![Shurnim icon](SpiderMan/server/web/templates/static/images/readme/haipa.png)  
-* SERVER:  It is mainly used for the management of scrapyd servers, including: adding new servers, scheduling server specified spiders, deleting the items of the designated servers, and the Web Ssh. of the server.
+* SERVER:  It is mainly used for the management of scrapyd servers, including: adding new servers, scheduling server specified spiders, deleting the items of the designated servers of the server.
 * PROJECT: The new local project is deployed to the specified server. This page includes: adding new projects, deleting items, editing project code, and deploying projects
 * There are also some subpages...
 #### InterfaceStyle

@@ -101,7 +101,7 @@
         dataType: "json",
         async: false,
         success: function (data) {
-                list_project = data.data;
+                list_project = data.data.projects;
             },
         error: function () {
             window.location.href = document.referrer;
@@ -284,11 +284,11 @@
                 async: false,
                 dataType: "json",
                 success: function (data) {
-                    for (var i = 0; i < data.data.length; i++) {
-                        tables += '<tr class="row100 body" id="{project_name},,{spider_name}">'.format({spider_name: data.data[i], project_name:value});
-                        tables += '<td  class="cell100 column2" style="text-align:center;"><a onclick="time_spider($(this))">' + html2Escape(data.data[i]) + '</a></td>';
+                    for (var i = 0; i < data.data.spiders.length; i++) {
+                        tables += '<tr class="row100 body" id="{project_name},,{spider_name}">'.format({spider_name: data.data.spiders[i], project_name:value});
+                        tables += '<td  class="cell100 column2" style="text-align:center;"><a onclick="time_spider($(this))">' + html2Escape(data.data.spiders[i]) + '</a></td>';
                         tables += '<td class="cell100 column2" style="text-align:center;">';
-                        tables += '<a onclick="run_spider()" id="{value}" name="{name}" class="btn btn-success" '.format({value: value, name: data.data[i]});
+                        tables += '<a onclick="run_spider()" id="{value}" name="{name}" class="btn btn-success" '.format({value: value, name: data.data.spiders[i]});
                         tables += 'style="color: #f8f6ff;margin-left: 10%;margin-top: 1%;">Runing</a>';
                         tables += '</td></tr>';
                     }
@@ -303,6 +303,7 @@
         // 获取父元素删除子元素
 
         texts = list_project.map(get_list_job);
+        console.log(texts);
         removeAllChild('run_spider');
         document.getElementById('run_spider').innerHTML = texts.join('');
     }
