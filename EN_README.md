@@ -18,7 +18,7 @@
 <a name="Background introduction"></a>  
 ## BackgroundIntroduction 
 *SpiderMan* Based on Scrapy, scrapyd, scrapy-API, tornado spider distributed management framework.<br/>  
-*SpiderMan* Features include spider scheduling, Web side SSH, Web end code editor and Scrapy project construction and so on. 
+*SpiderMan* Features include spider scheduling, Web end code editor and Scrapy project construction and so on. 
   
 <a name="Project Introduction"></a>  
 ## ProjectIntroduction 
