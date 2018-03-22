@@ -468,6 +468,7 @@ class DeployProjectHandler(BaseHandler):
 class MonitorHostHandler(BaseHandler):
     """监控主机是否正常, 监控爬虫log 是否出错
     """
-    pass
+    def get(self, *args, **kwargs):
+        pass
 
 
