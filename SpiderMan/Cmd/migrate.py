@@ -1,7 +1,9 @@
 # -*- coding:utf-8 -*-
+import re
+import getpass
 import hashlib
 from tornado.log import app_log
-from SpiderMan.model import SpiderManConf
+from SpiderMan.util import SpiderManConf
 from SpiderMan.models_sql import sum_sql
 from SpiderMan.server.web import models
 from SpiderMan.server.web.models import User
@@ -16,31 +18,24 @@ def input_user(msg=None):
     user = User.getOne(User.username == username)
     if user is not None:
         return input_user("The user has already existed")
-    password = input("Please enter the password for the admin:")
+    password = getpass.getpass("Please enter the password for the admin:")
     if not password.strip():
         print("The password is empty!")
         return input_user()
-    email = input("Please enter the admin email:")
+
+    a = lambda x: re.findall(r'^[0-9a-zA-Z_]{0,19}@[0-9a-zA-Z]{1,13}\.[com,cn,net]{1,3}$', x)
+    while 1:
+        email = input("Please enter the admin email:")
+        if a(email):
+            break
+        print("input email error")
     return username, hashlib.md5(password.encode()).hexdigest(), email
 
 
 def create_database():
     """创建数据库以及表"""
-    if SpiderManConf.MYSQL:
-        try:
-            models.get_datebase().connect()
-        except:
-            # not mysql db
-            models.get_datebase('mysql').execute_sql("CREATE DATABASE {}".format('SpiderMan'))
-        [models.get_datebase().execute_sql(sql) for sql in sum_sql]
-    else:
-        try:
-            models.Host.create_table()
-            models.User.create_table()
-            models.Project.create_table()
-            models.Timing.create_table()
-        except:
-            pass
+    models.get_datebase('mysql').execute_sql("CREATE DATABASE {}".format('SpiderMan'))
+    [models.get_datebase().execute_sql(sql) for sql in sum_sql]
     # 创建数据库表
     username, password, email = input_user()
     User.create(username=username, password=password, email=email, isadmin=True).save()

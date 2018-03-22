@@ -3,35 +3,48 @@ import os
 import base64
 import uuid
 
+import peewee_async
 import tornado.web
 import tornado.options
 import tornado.ioloop
 import tornado.httpserver
 from tornado.log import app_log
+
+from SpiderMan.util.DataBase import MyManager
 from SpiderMan.hello import hello
-from SpiderMan.model import SpiderManConf
+from SpiderMan.server.web.models import get_datebase
+from SpiderMan.util import SpiderManConf
 from SpiderMan.server.web.Timing_ import timing
-from SpiderMan.server.web.webSsh.handlers import (
-    WSHandler, IndexHandler as WebSshIndexHandler,
-)
-from SpiderMan.server.web.webSsh.ioloop import IOLoop
-
-from SpiderMan.server.web.views import (
-    EditFileHandler, IndexHandler, LoginHandler,
-    HostListHandler,SchedulHandler, TimingHtmlHandler, ProjectHandler,
-)
-
-from SpiderMan.server.web.api import (
-    ListJobsHandler, ListProjectHandler, ListSpiderHandler,
-    SpiderLogHandler, SpiderCancelHandler, RunSpiderHandler,
-    DeleteProjectHandler, StartProjectHandler,
-    FileCodeHandler, UpdateFileHandler, DeleteHostHandler,
-    HostHomeHandler, ModifyConfHandler,
-    StopSpiderHandler, SetTimingHandler, GetTimingHandler,
-    HostSshHandler, LocationListProjectHandler, NewHostHandler,
-    DeleteLocationProjectHandler, DeployProjectHandler,
-    LocationListSpiderHandler, AuthHandler
-)
+from SpiderMan.server.web.views import EditFileHandler
+from SpiderMan.server.web.views import IndexHandler
+from SpiderMan.server.web.views import LoginHandler
+from SpiderMan.server.web.views import HostListHandler
+from SpiderMan.server.web.views import SchedulHandler
+from SpiderMan.server.web.views import TimingHtmlHandler
+from SpiderMan.server.web.views import ProjectHandler
+from SpiderMan.server.web.api import ListJobsHandler
+from SpiderMan.server.web.api import ListProjectHandler
+from SpiderMan.server.web.api import ListSpiderHandler
+from SpiderMan.server.web.api import SpiderCancelHandler
+from SpiderMan.server.web.api import SpiderLogHandler
+from SpiderMan.server.web.api import RunSpiderHandler
+from SpiderMan.server.web.api import DeleteProjectHandler
+from SpiderMan.server.web.api import StartProjectHandler
+from SpiderMan.server.web.api import FileCodeHandler
+from SpiderMan.server.web.api import UpdateFileHandler
+from SpiderMan.server.web.api import DeleteHostHandler
+from SpiderMan.server.web.api import HostHomeHandler
+from SpiderMan.server.web.api import ModifyConfHandler
+from SpiderMan.server.web.api import StopSpiderHandler
+from SpiderMan.server.web.api import SetTimingHandler
+from SpiderMan.server.web.api import GetTimingHandler
+from SpiderMan.server.web.api import LocationListProjectHandler
+from SpiderMan.server.web.api import NewHostHandler
+from SpiderMan.server.web.api import DeleteLocationProjectHandler
+from SpiderMan.server.web.api import DeployProjectHandler
+from SpiderMan.server.web.api import LocationListSpiderHandler
+from SpiderMan.server.web.api import AuthHandler
+from SpiderMan.server.web.api import MonitorHostHandler
 
 
 def url_conf():
@@ -47,10 +60,8 @@ def url_conf():
     }
 
     views_urls = [
-        (r"/ws", WSHandler),
         (r'^/html/admin/login/$', LoginHandler),
         (r'^/html/Host/host_list/$', HostListHandler),
-        (r"^/html/Host/(\S+)/WebSshIndex/$", WebSshIndexHandler),
         (r"^/html/Host/(\S+)/spider/Schedul/$", SchedulHandler),
         (r"^/html/Host/(\S+)/spider/Timing/$", TimingHtmlHandler),
         (r"^/html/Project/(\S+)/edit_file/$", EditFileHandler),
@@ -65,8 +76,6 @@ def url_conf():
         (r'^/api/web/Host/newHost/$', NewHostHandler),
         # 主机上所有的项目
         (r'^/api/web/Host/(\S+)/list_project/$', ListProjectHandler),
-        # 主机ssh
-        (r'^/api/web/Host/(\S+)/host_shh/$', HostSshHandler),
         # 删除主机
         (r'^/api/web/Host/(\S+)/delete_host/$', DeleteHostHandler),
         # 主机上正在运行的spider
@@ -103,11 +112,12 @@ def url_conf():
         # (r'^/api/web/Ssh/(\S+)/$', SshHandler),
         # 设置指定主机中指定项目的指定spider 定时任务
         (r'^/api/web/Host/(\S+)/Project/(\S+)/timing_spider/(\S+)/(\S+)/$', SetTimingHandler),
-
         # 获取指定主机中指定项目的指定spider 定时任务
         (r'^/api/web/Host/(\S+)/Project/(\S+)/get_timing_spider/(\S+)/$', GetTimingHandler),
+        (r'^/api/web/Host/(\S+)/Monitor/$', MonitorHostHandler),
     ]
-    return tornado.web.Application(views_urls + apis_urls, static_path=static_path, template_path=template_path, debug=True, **settings)
+    return tornado.web.Application(views_urls + apis_urls, static_path=static_path, template_path=template_path,
+                                   debug=True, **settings)
 
 
 def main(**kwargs):
@@ -118,11 +128,14 @@ def main(**kwargs):
         kwargs['host'] = kwargs['dom'].split(':')[0]
         kwargs['port'] = kwargs['dom'].split(':')[1]
     app_log.error(hello.format(host=kwargs['host'], port=kwargs['port']))
-    http_server = tornado.httpserver.HTTPServer(url_conf())
+    app = url_conf()
+    app.objects = MyManager(get_datebase())
+    http_server = tornado.httpserver.HTTPServer(app)
     http_server.listen(kwargs['port'], address=kwargs['host'])
-    IOLoop.instance().start()
-    tornado.ioloop.IOLoop.instance().start()
     tornado.ioloop.PeriodicCallback(timing, 5000).start()
+    tornado.ioloop.IOLoop.instance().start()
+
+
 
 
 if __name__ == '__main__':

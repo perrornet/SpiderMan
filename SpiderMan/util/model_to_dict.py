@@ -105,7 +105,7 @@ class ModelsToDict(dict):
 
 def models_to_dict(model):
     """peewee Model sequences into Dict
-    :param model:peewee query model object
+    :param model:peewee query util object
     :return: dict
     """
     if not model:

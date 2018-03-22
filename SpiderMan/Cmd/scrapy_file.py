@@ -1,4 +1,4 @@
-from SpiderMan.model.start_scrapy_project import StartScrapyProject
-from SpiderMan.model.gen_scrapy_spider import GenSpider
+from SpiderMan.util.start_scrapy_project import StartScrapyProject
+from SpiderMan.util.gen_scrapy_spider import GenSpider
 
 

@@ -1,10 +1,9 @@
 # -*- coding:utf-8 -*-
 import hashlib
-import time
 
 import tornado.web
-from SpiderMan.model.model_to_dict import models_to_dict
-from SpiderMan.server.web.models import User, Host, Project
+from SpiderMan.util.model_to_dict import models_to_dict
+from SpiderMan.server.web.models import Host
 
 
 class BaseHandler(tornado.web.RequestHandler):

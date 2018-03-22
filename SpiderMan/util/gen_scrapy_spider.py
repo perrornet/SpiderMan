@@ -99,11 +99,12 @@ from importlib import import_module
 #
 
 class GenSpider(object):
+    base_path = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/')
     model_template = {
-        "basic": "SpiderMan/model/scrapy_template/spider.tp",
-        "crawl": "SpiderMan/model/scrapy_template/crawl.tp",
-        "csvfeed": "SpiderMan/model/scrapy_template/csvf.tp",
-        "xmlfeed": "SpiderMan/model/scrapy_template/xml.tp"
+        "basic": os.path.join(base_path, "scrapy_template/spider.tp"),
+        "crawl": os.path.join(base_path, "scrapy_template/crawl.tp"),
+        "csvfeed": os.path.join(base_path, "scrapy_template/csvf.tp"),
+        "xmlfeed": os.path.join(base_path, "scrapy_template/xml.tp")
     }
     all_template = ["basic", "crawl", "csvfeed", "xmlfeed"]
 

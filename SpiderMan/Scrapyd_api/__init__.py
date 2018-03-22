@@ -1,9 +1,4 @@
-#-*- coding:utf-8 -*-
+""""
+scrapyd api 的异步实现
+"""
 
-
-class MyObject(object):
-    pass
-
-
-if __name__ == '__main__':
-    pass

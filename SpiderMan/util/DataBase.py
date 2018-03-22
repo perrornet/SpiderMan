@@ -1,5 +1,6 @@
 import asyncio
 import peewee
+import traceback
 from peewee_async import Manager
 
 
@@ -9,9 +10,9 @@ class MyManager(Manager):
     """
     @asyncio.coroutine
     def get(self, source_, *args, **kwargs):
-        """Get the model instance.
+        """Get the util instance.
 
-        :param source_: model or base query for lookup
+        :param source_: util or base query for lookup
 
         Example::
 
@@ -43,8 +44,8 @@ class MyManager(Manager):
             if is_all is False:
                 return list(result)[0]
             return list(result)
-        except IndexError as f:
-            print(f)
+        except IndexError:
+            traceback.print_exc()
             return None
 
 

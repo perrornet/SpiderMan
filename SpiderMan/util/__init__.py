@@ -14,8 +14,6 @@ if not isdir(join(HOME_PATH, "SpiderMan")):
     os.makedirs(join(HOME_PATH, "SpiderMan", 'project', 'scrapys'))
 
 CONF = """
-MYSQL = False
-SQLLITE = True
 HOST = '0.0.0.0'
 PORT = 8659
 MYSQLHOST = ''
@@ -29,17 +27,14 @@ class SpiderManConf(object):
     如果mysql == false 默认使用sqllite
     """
     SPIDER_MAN_PATH = join(HOME_PATH, "SpiderMan")
-    SPIDER_MAN_DB_PATH = join(SPIDER_MAN_PATH, 'db', 'SpiderMan.db')
     SPIDER_MAN_SCRAPY_FILE_PATH = join(SPIDER_MAN_PATH, 'project', 'scrapys')
     SPIDER_MAN_CONF_PY = join(SPIDER_MAN_PATH, 'SpiderManConf.py')
     if not os.path.isfile(SPIDER_MAN_CONF_PY):
         with open(SPIDER_MAN_CONF_PY, 'w') as fp:
             fp.write(CONF)
-        MYSQL = False
-        SQLLITE = True
         HOST = '0.0.0.0'
         PORT = 8659
-        MYSQLHOST = ''
+        MYSQLHOST = '127.0.0.1'
         MYSQLUSER = ''
         MYSQLPASSWORD = ''
     else:
