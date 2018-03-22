@@ -19,7 +19,7 @@
 ## 背景介绍  
   
 *SpiderMan* 基于Scrapy、scrapyd、Scrapyd_API、tornado 爬虫分布式管理框架。<br/>  
-*SpiderMan*功能包括爬虫调度，web端SSH Web端的代码编辑器和新建Scrapy项目等。
+*SpiderMan*功能包括爬虫调度，Web端的代码编辑器和新建Scrapy项目等。
   
 <a name="项目介绍"></a>  
 ## 项目介绍  
