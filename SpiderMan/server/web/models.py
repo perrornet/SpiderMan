@@ -2,8 +2,8 @@
 import os
 
 from peewee import *
-from SpiderMan.model.DataBase import database
-from SpiderMan.model import SpiderManConf
+import peewee_async
+from SpiderMan.util import SpiderManConf
 
 """
 python -m pwiz -H test.onetuu.com -p 3306 -u backend -p backend@123 -e mysql -t __momentcrawlertemp -i onetuu
@@ -11,17 +11,7 @@ python -m pwiz -H test.onetuu.com -p 3306 -u backend -p backend@123 -e mysql -t 
 
 
 def get_datebase(dbname='SpiderMan'):
-    if SpiderManConf.MYSQL:
-        return database(**{
-            'pool_name': 'test',
-            'host': SpiderManConf.MYSQLHOST,
-            'port': 3306,
-            'user': SpiderManConf.MYSQLUSER,
-            'password': SpiderManConf.MYSQLPASSWORD,
-            'database': dbname,
-            'use_dict_cursor': False
-        })
-    return SqliteDatabase(SpiderManConf.SPIDER_MAN_DB_PATH)
+    return peewee_async.PooledMySQLDatabase(dbname, host=SpiderManConf.MYSQLHOST, port=3306, user=SpiderManConf.MYSQLUSER, password=SpiderManConf.MYSQLPASSWORD, charset='utf8')
 
 
 class BaseModel(Model):
@@ -60,7 +50,7 @@ class Project(BaseModel):
 
     class meta:
         order_by = 'id'
-        db_table = 'Project'
+        db_table = 'project'
 
 
 class Timing(BaseModel):
@@ -79,11 +69,9 @@ class Timing(BaseModel):
 class Host(BaseModel):
     id_ = PrimaryKeyField(db_column="id")
     host = CharField(null=False, verbose_name="主机ip", max_length=24)
-    name = CharField(null=False, verbose_name="主机別稱", max_length=128, choices='utf8')
+    name = CharField(null=False, verbose_name="主机別稱", max_length=128)
     scrapyd_name = CharField(null=True, verbose_name="主机scrapyd名称", max_length=128)
     scrapyd_password = CharField(null=True, verbose_name="主机scrapyd密码", max_length=128)
-    host_ssh_name = CharField(null=True, verbose_name="主机ssh名称", max_length=128)
-    host_ssh_password = CharField(null=True, verbose_name="主机ssh密码", max_length=128)
     port = IntegerField(null=False, verbose_name="主机端口")
     create_time = IntegerField(null=False, verbose_name="创建时间")
     is_run = BooleanField(verbose_name="是否運行中")
@@ -92,5 +80,3 @@ class Host(BaseModel):
         order_by = 'id'
         db_table = 'host'
 
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
