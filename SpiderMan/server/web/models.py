@@ -3,7 +3,7 @@ import os
 
 from peewee import *
 import peewee_async
-from SpiderMan.util import SpiderManConf
+from SpiderMan.utils import SpiderManConf
 
 """
 python -m pwiz -H test.onetuu.com -p 3306 -u backend -p backend@123 -e mysql -t __momentcrawlertemp -i onetuu

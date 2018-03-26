@@ -10,10 +10,10 @@ import tornado.ioloop
 import tornado.httpserver
 from tornado.log import app_log
 
-from SpiderMan.util.DataBase import MyManager
+from SpiderMan.utils.DataBase import MyManager
 from SpiderMan.hello import hello
 from SpiderMan.server.web.models import get_datebase
-from SpiderMan.util import SpiderManConf
+from SpiderMan.utils import SpiderManConf
 from SpiderMan.server.web.Timing_ import timing
 from SpiderMan.server.web.views import EditFileHandler
 from SpiderMan.server.web.views import IndexHandler

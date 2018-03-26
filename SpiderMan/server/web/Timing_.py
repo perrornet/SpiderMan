@@ -2,7 +2,7 @@
 import time
 
 from tornado.log import app_log
-from SpiderMan.util.DataBase import MyManager
+from SpiderMan.utils.DataBase import MyManager
 from SpiderMan.server.web.models import Timing, Host, get_datebase
 from SpiderMan.Scrapyd_api.client import ScrapyApi
 
