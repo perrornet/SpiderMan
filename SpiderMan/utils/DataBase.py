@@ -10,10 +10,9 @@ class MyManager(Manager):
     """
     @asyncio.coroutine
     def get(self, source_, *args, **kwargs):
-        """Get the util instance.
+        """Get the utils instance.
 
-        :param source_: util or base query for lookup
-
+        :param source_: utils or base query for lookup
         Example::
 
             async def my_async_func():
