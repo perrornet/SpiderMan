@@ -8,7 +8,6 @@ Options:
     -v --version
 """
 from docopt import docopt
-from tornado.log import app_log
 from SpiderMan import version
 from SpiderMan.Cmd.migrate import create_database, create_admin
 from SpiderMan.server.web.main import main as tornado_main

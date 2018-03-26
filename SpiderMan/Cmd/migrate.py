@@ -3,7 +3,7 @@ import re
 import getpass
 import hashlib
 from tornado.log import app_log
-from SpiderMan.util import SpiderManConf
+from SpiderMan.utils import SpiderManConf
 from SpiderMan.models_sql import sum_sql
 from SpiderMan.server.web import models
 from SpiderMan.server.web.models import User
