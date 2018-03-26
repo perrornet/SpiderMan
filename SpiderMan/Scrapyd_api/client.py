@@ -7,7 +7,6 @@ import functools
 from urllib.parse import urljoin
 
 from scrapyd_api import constants
-from requests.models import PreparedRequest
 from tornado.httpclient import HTTPRequest
 from tornado.httpclient import AsyncHTTPClient
 
@@ -30,12 +29,8 @@ class Client(object):
         :param: files: post 文件流数据
         :type: files: dict(filename=file_object)
         """
-        _prepare = PreparedRequest()
-        _prepare.headers = {}
-        _prepare.prepare_body(data=data, files=files)
         data.update(files)
         return urlencode(data)
-        # return _prepare.body
 
     def _http_request(self, **kwargs):
         kwargs['auth_username'] = self._username

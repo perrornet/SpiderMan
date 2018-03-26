@@ -103,7 +103,7 @@ def build_egg(project_path, name, version, SCRAPY_SETUP_CODE):
     :param project_path: scrapy project path
     :param name: scrapy name
     :param version: scrapyd version
-    :param setting_model: scrapyd util.setting
+    :param setting_model: scrapyd utils.setting
     :return: egg file path
     """
     if not os.path.isdir(project_path):

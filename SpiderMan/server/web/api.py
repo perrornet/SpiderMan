@@ -6,20 +6,20 @@ import time
 from tornado import escape
 from tornado.log import app_log
 
-from SpiderMan.util import SpiderManConf
-from SpiderMan.util.cache import cache
-from SpiderMan.util.model_to_dict import ModelsToDict
-from SpiderMan.util.tornado_model import BaseHandler
-from SpiderMan.util.start_scrapy_project import StartScrapyProject
-from SpiderMan.util.gen_scrapy_spider import GenSpider
+from SpiderMan.utils import SpiderManConf
+from SpiderMan.utils.cache import cache
+from SpiderMan.utils.model_to_dict import ModelsToDict
+from SpiderMan.utils.tornado_model import BaseHandler
+from SpiderMan.utils.start_scrapy_project import StartScrapyProject
+from SpiderMan.utils.gen_scrapy_spider import GenSpider
 from SpiderMan.Scrapyd_api.client import ScrapyApi
 from SpiderMan.server.web.models import Timing
 from SpiderMan.server.web.models import User
 from SpiderMan.server.web.models import Project
 from SpiderMan.server.web.models import Host
-from SpiderMan.util.scrapy_project import build_egg
-from SpiderMan.util.scrapy_project import delete_scrapy_project
-from SpiderMan.util.DataBase import MyManager
+from SpiderMan.utils.scrapy_project import build_egg
+from SpiderMan.utils.scrapy_project import delete_scrapy_project
+from SpiderMan.utils.DataBase import MyManager
 from SpiderMan.server.web.models import get_datebase
 
 app = MyManager(get_datebase())
@@ -120,7 +120,7 @@ class StartProjectHandler(BaseHandler):
     :post_param spdier_name: scrapy spider name
     :post_param project_description: scrapy project description
     :post_param scrapy_start_url: scrapy spider start url
-    :post_param scrapyd_model: scrapy create spider util
+    :post_param scrapyd_model: scrapy create spider utils
     """
 
     async def post(self):
@@ -256,7 +256,7 @@ class HostHomeHandler(BaseHandler):
         data = ModelsToDict(
             data=host_info, field_name={'id_': 'id'},
             shield_field=[Host.scrapyd_password],
-            field_handle={Host.create_time: self.time2time}).data
+            field_handle={Host.create_time: self.time2time})
         self.write({"data": data})
 
 

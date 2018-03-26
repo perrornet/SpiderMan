@@ -2,7 +2,7 @@
 import hashlib
 
 import tornado.web
-from SpiderMan.util.model_to_dict import models_to_dict
+from SpiderMan.utils.model_to_dict import ModelsToDict as models_to_dict
 from SpiderMan.server.web.models import Host
 
 
@@ -45,8 +45,9 @@ class LoginHandler(BaseHandler):
 
 class HostListHandler(BaseHandler):
     @tornado.web.authenticated
-    def get(self, *args, **kwargs):
-        self.render('host_list.html', item=models_to_dict(Host.select()))
+    async def get(self, *args, **kwargs):
+        query = await self.application.objects.get(Host.select())
+        self.render('host_list.html', item=models_to_dict(query))
 
 
 class DeleteHandler(BaseHandler):

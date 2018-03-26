@@ -11,7 +11,7 @@ from tornado.escape import utf8
 from tornado.httpclient import AsyncHTTPClient
 from tornado.httpclient import HTTPRequest
 
-from SpiderMan.util.model_to_dict import ModelsToDict
+from SpiderMan.utils.model_to_dict import ModelsToDict
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -100,7 +100,6 @@ class BaseHandler(tornado.web.RequestHandler):
 
     async def ping(self, url):
         try:
-            print(url)
             response = await AsyncHTTPClient().fetch(HTTPRequest(url=url, connect_timeout=0.2))
         except tornado.httpclient.HTTPError:
             return False

@@ -1,22 +1,34 @@
 # -*- coding:utf-8 -*-
-import time
-from collections import UserDict
 from peewee import Field
-from peewee import Model
 
 
-class ModelsToDict(dict):
+class ModelsToDict():
     """peewee to dict
+    Usage:
+        >>> import ModelsToDict
+        >>> query = MyModel.select().where(id=1)
+        >>>ModelsToDict(query)
+        {
+            "id": 1,
+            "name": 2
+        }
+        >>>querys = MyModel.select()
+        >>> ModelsToDict(query, shield_field=['name'], field_name={"id": "id_"}, field_handle={"id": lambda x: str(x)}).data
+        [
+            {"id_": "1"},{"id_": "2"}, {"id_", :"3"}
+        ]
+        >>>
+
     :type data: object
     :type is_shield: bool
     :type shield_field: list [peewee Field, "name"]
     :type field_name: dict {filed or peewee Field: "name"}
     :type field_handle: dict {filed or peewee Field: func}
-    :param data: peewee query object
-    :param is_shield: is shield kw filed
-    :param shield_field: shield filed
-    :param field_handle: apponit filed handle
-    :param field_name: apponit filed Modified alias
+    :param data: peewee 查询对象
+    :param is_shield: 是否需要屏蔽,
+    :param shield_field: 屏蔽的字段, 取决于 is_shield
+    :param field_handle: 对特定的字段进行处理
+    :param field_name: 对特定的字段修改名称
     """
 
     def __bool__(self):
@@ -28,15 +40,17 @@ class ModelsToDict(dict):
     def __getitem__(self, item):
         print(item)
 
-    def __init__(self, **kw):
-        self._data = kw['data']
+    def __init__(self, data, **kw):
+        self._data = data
         self.is_shield = kw.get('is_shield', True)
         self.field_name = self._kw_handle(kw.get('field_name', {}))
         self.shield_field = self._kw_handle([] if kw.get('shield_field') is None else kw['shield_field'])
         self.field_handle = self._kw_handle({} if kw.get('field_handle') is None else kw['field_handle'])
         self._data = self._models_dict()
         if isinstance(self._data, dict):
-            super(ModelsToDict, self).__init__(**self._data)
+            dict.__init__(**self._data)
+        if isinstance(self._data, list):
+            list.__init__(self._data)
 
     @property
     def data(self):
@@ -102,18 +116,5 @@ class ModelsToDict(dict):
             return_data[_field_name] = _
         return return_data
 
-
-def models_to_dict(model):
-    """peewee Model sequences into Dict
-    :param model:peewee query util object
-    :return: dict
-    """
-    if not model:
-        return {}
-    if hasattr(model, 'get_query_meta'):
-        model_filed = model.get_query_meta()[0]
-        return [{l.name: getattr(i, l.name) for l in model_filed} for i in model]
-    model_filed = model.select().get_query_meta()[0]
-    return {l.name: getattr(model, l.name) for l in model_filed}
 
 
