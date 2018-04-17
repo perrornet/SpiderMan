@@ -42,7 +42,7 @@ class Client(object):
         """类似requests.get
             return: tornado.httpclient.HTTPResponse
         """
-        if not params is None:
+        if params is not None:
             url += '?' + '&'.join(["{}={}".format(i, params[i]) for i in params])
         request = self._http_request(url=urljoin(self._target, url))
         if callback is None:
