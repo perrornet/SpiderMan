@@ -2,6 +2,7 @@
 import re
 import getpass
 import hashlib
+import peewee
 from tornado.log import app_log
 from SpiderMan.utils import SpiderManConf
 from SpiderMan.models_sql import sum_sql
@@ -34,12 +35,14 @@ def input_user(msg=None):
 
 def create_database():
     """创建数据库以及表"""
-    models.get_datebase('mysql').execute_sql("CREATE DATABASE {}".format('SpiderMan'))
-    [models.get_datebase().execute_sql(sql) for sql in sum_sql]
-    # 创建数据库表
-    username, password, email = input_user()
-    User.create(username=username, password=password, email=email, isadmin=True).save()
-
+    try:
+        models.get_datebase('mysql').execute_sql("CREATE DATABASE {}".format('SpiderMan'))
+        [models.get_datebase().execute_sql(sql) for sql in sum_sql]
+        # 创建数据库表
+        username, password, email = input_user()
+        User.create(username=username, password=password, email=email, isadmin=True).save()
+    except peewee.ProgrammingError:
+        pass
 
 def create_admin():
     try:
