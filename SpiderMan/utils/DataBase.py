@@ -1,5 +1,6 @@
 import asyncio
 import peewee
+import pymysql
 import traceback
 from peewee_async import Manager
 
@@ -8,6 +9,7 @@ class MyManager(Manager):
     """修改父類get 方法, 使得能够自动分辨返回list 还是单个对象,
         如果查询对象不存在只会返回None , 不再会报错
     """
+
     @asyncio.coroutine
     def get(self, source_, *args, **kwargs):
         """Get the utils instance.

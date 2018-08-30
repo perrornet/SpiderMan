@@ -40,14 +40,14 @@ class IndexHandler(BaseHandler):
 class LoginHandler(BaseHandler):
     def get(self, *args, **kwargs):
         next = self.get_argument('next', '/index')
-        self.render('login.html', next=next, msg="")
+        self.render('login.html', next=next, msg="", message="")
 
 
 class HostListHandler(BaseHandler):
     @tornado.web.authenticated
     async def get(self, *args, **kwargs):
         query = await self.application.objects.get(Host.select())
-        self.render('host_list.html', item=models_to_dict(query))
+        self.render('host_list.html', item=models_to_dict(query).data)
 
 
 class DeleteHandler(BaseHandler):

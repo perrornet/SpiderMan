@@ -6,9 +6,10 @@ import peewee_async
 from SpiderMan.utils import SpiderManConf
 
 
-
 def get_datebase(dbname='SpiderMan'):
-    return peewee_async.PooledMySQLDatabase(dbname, host=SpiderManConf.MYSQLHOST, port=3306, user=SpiderManConf.MYSQLUSER, password=SpiderManConf.MYSQLPASSWORD, charset='utf8')
+    return peewee_async.PooledMySQLDatabase(dbname, host=SpiderManConf.MYSQLHOST, port=3306,
+                                            user=SpiderManConf.MYSQLUSER, password=SpiderManConf.MYSQLPASSWORD,
+                                            charset='utf8')
 
 
 class BaseModel(Model):
@@ -76,4 +77,3 @@ class Host(BaseModel):
     class meta:
         order_by = 'id'
         db_table = 'host'
-
