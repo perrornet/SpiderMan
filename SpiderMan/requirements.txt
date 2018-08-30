@@ -3,6 +3,6 @@ tornado==5.0
 unipath==1.1
 python-scrapyd-api==2.0.1
 docopt==0.6.2
-netifaces==0.10.6
+pymysql==0.9.2
 peewee_async==0.5.11
-aiomysql==0.0.12
+aiomysql==0.0.19

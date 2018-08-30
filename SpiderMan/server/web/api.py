@@ -271,12 +271,18 @@ class AuthHandler(BaseHandler):
         if not username or not password:
             self.render('login.html', next=next, msg="")
             return []
-        is_login = await self.application.objects.get(User, username=username, password=password)
-        if not is_login is None:
-            self.set_secure_cookie("user", "admin")
-            self.redirect(next, permanent=True)
-            return []
-        self.render('login.html', next=next, msg="賬號密碼錯誤！")
+        try:
+            is_login = await self.application.objects.get(User, username=username, password=password)
+            if is_login:
+                self.set_secure_cookie("user", "admin")
+                self.redirect(next, permanent=True)
+                return []
+        except Exception as e:
+            app_log.error(e)
+            self.render('login.html', next=next, msg="server error", message="")
+            return
+        self.render('login.html', next=next, msg="账号密码错误！", message="")
+
 
 
 class ModifyConfHandler(BaseHandler):

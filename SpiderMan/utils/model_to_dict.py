@@ -1,8 +1,7 @@
 # -*- coding:utf-8 -*-
 from peewee import Field
 
-
-class ModelsToDict():
+class ModelsToDict(dict):
     """peewee to dict
     Usage:
         >>> import ModelsToDict
@@ -30,15 +29,15 @@ class ModelsToDict():
     :param field_handle: 对特定的字段进行处理
     :param field_name: 对特定的字段修改名称
     """
+    @property
+    def data(self):
+        return self._data
 
     def __bool__(self):
         if isinstance(self._data, list):
             return bool(len(self._data))
         if isinstance(self._data, dict):
             return bool(self._data)
-
-    def __getitem__(self, item):
-        print(item)
 
     def __init__(self, data, **kw):
         self._data = data
@@ -48,9 +47,9 @@ class ModelsToDict():
         self.field_handle = self._kw_handle({} if kw.get('field_handle') is None else kw['field_handle'])
         self._data = self._models_dict()
         if isinstance(self._data, dict):
-            dict.__init__(**self._data)
+            dict().__init__(**self._data)
         if isinstance(self._data, list):
-            list.__init__(self._data)
+            list().__init__(self._data)
 
     @property
     def data(self):
