@@ -34,7 +34,7 @@
 <a name="Get code"></a>  
 ### GetCode  
   
-* github Project Home: <https://github.com/QYLGitHub/SpiderMan>  
+* github Project Home: <https://github.com/PerrorOne/SpiderMan>  
   
   
 <a name="UseAnEexample"></a> 
@@ -52,7 +52,7 @@
 #### deploy
 ```
 clone project to local
-git clone https://github.com/QYLGitHub/SpiderMan.git
+git clone https://github.com/PerrorOne/SpiderMan.git
 cd SpiderMan
 python setup.py install
 # init project
@@ -61,7 +61,11 @@ SpiderMan init
 SpiderMan runserver [host:port]
 # Create an administrator account
 SpiderMan admin
-
+#=================Use docker======================
+git clone https://github.com/PerrorOne/SpiderMan.git
+cd SpiderMan
+docker build -t spiderman:v1 .
+docker run -it -p 8080:8080 spiderman:v1
 ```
 
 #### Other

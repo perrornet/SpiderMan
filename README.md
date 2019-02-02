@@ -34,7 +34,7 @@
 <a name="获取代码"></a>  
 ### 获取代码  
   
-* github 项目主页: <https://github.com/QYLGitHub/SpiderMan>  
+* github 项目主页: <https://github.com/PerrorOne/SpiderMan>  
   
   
 <a name="使用实例"></a>  
@@ -53,7 +53,7 @@
 #### 部署
 ```
 克隆项目至本地
-git clone https://github.com/QYLGitHub/SpiderMan.git
+git clone https://github.com/PerrorOne/SpiderMan.git
 cd SpiderMan
 python setup.py install
 # 初始化项目
@@ -62,6 +62,11 @@ SpiderMan init
 SpiderMan runserver [host:port]
 # 创建管理员账号
 SpiderMan admin
+#=================使用docker部署======================
+git clone https://github.com/PerrorOne/SpiderMan.git
+cd SpiderMan
+docker build -t spiderman:v1 .
+docker run -it -p 8080:8080 spiderman:v1
 ```
 
 #### 其他
