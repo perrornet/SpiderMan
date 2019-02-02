@@ -7,7 +7,7 @@ from SpiderMan.utils import SpiderManConf
 
 
 def get_datebase(dbname='SpiderMan'):
-    return peewee_async.PooledMySQLDatabase(dbname, host=SpiderManConf.MYSQLHOST, port=3306,
+    return peewee_async.PooledMySQLDatabase(dbname, host=SpiderManConf.MYSQLHOST, port=SpiderManConf.MYSQLPORT,
                                             user=SpiderManConf.MYSQLUSER, password=SpiderManConf.MYSQLPASSWORD,
                                             charset='utf8')
 
