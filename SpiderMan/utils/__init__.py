@@ -4,6 +4,7 @@
 import os
 import logging
 import configparser
+import os
 from os.path import isdir
 from os.path import join
 from os.path import expanduser
@@ -33,15 +34,29 @@ class _SpiderManConf(object):
     SPIDER_MAN_CONF_PY = join(SPIDER_MAN_PATH, 'SpiderManConf.ini')
 
     def __init__(self):
+        self.MYSQLPORT = 3306
+        self.MYSQLHOST = "127.0.0.1"
+        self.MYSQLUSER = "root"
+        self.MYSQLPASSWORD = ""
+        self.LOGGINGLEVEL = "DEBUG"
+        self.HOST = "0.0.0.0"
+        self.port = 8659
+        if "CMD" in os.environ:  # DOCKER
+            if "MYSQL_PORT" in os.environ:
+                self.MYSQLPORT = int(os.environ["MYSQL_PORT"])
+            if "MYSQL_HOST" in os.environ:
+                self.MYSQLHOST = os.environ["MYSQL_HOST"]
+            if "MYSQL_USER" in os.environ:
+                self.MYSQLUSER = os.environ["MYSQL_USER"]
+            if "MYSQL_PASS" in os.environ:
+                self.MYSQLPASSWORD = os.environ["MYSQL_PASS"]
+            if "SERVER_PORT" in os.environ:
+                self.port = int(os.environ["SERVER_PORT"])
+            if "SERVER_HOST" in os.environ:
+                self.HOST = os.environ["SERVER_HOST"]
+            return
         self.cfg = configparser.ConfigParser()
         if not os.path.isfile(self.SPIDER_MAN_CONF_PY):
-            self.MYSQLPORT = 3306
-            self.MYSQLHOST = "127.0.0.1"
-            self.MYSQLUSER = "root"
-            self.MYSQLPASSWORD = ""
-            self.LOGGINGLEVEL = "DEBUG"
-            self.HOST = "0.0.0.0"
-            self.port = 8659
             self.cfg.add_section("mysql")
             self.cfg.add_section("logging")
             self.cfg.add_section("server")

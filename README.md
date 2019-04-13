@@ -66,7 +66,21 @@ SpiderMan admin
 git clone https://github.com/PerrorOne/SpiderMan.git
 cd SpiderMan
 docker build -t spiderman:v1 .
-docker run -it -p 8080:8080 spiderman:v1
+# 进入系统创建admin用户
+docker run -it -p 8080:8080 spiderman:v1 /bin/bash
+# sh
+/root/anaconda3/envs/spderman/bin/SpiderMan init
+# 启动
+docker run -d -p 8080:8080 spiderman:v1
+# 支持从环境变量中读取配置
+--env MYSQL_PORT=3306
+--env MYSQL_HOST=127.0.0.1
+--env MYSQL_USER=root
+--env MYSQL_PASS=99999
+# 示例：
+docker run -d -p 8080:8080 --env MYSQL_PORT=3306 --env MYSQL_HOST=127.0.0.1 \
+--env MYSQL_USER=root --env MYSQL_PASS=99999 spiderman:v1
+# 浏览器中输入：127.0.0.1:8080
 ```
 
 #### 其他
