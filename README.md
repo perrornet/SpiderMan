@@ -58,8 +58,6 @@ cd SpiderMan
 python setup.py install
 # 初始化项目
 SpiderMan init
-# 指定host,port 
-SpiderMan runserver [host:port]
 # 创建管理员账号
 SpiderMan admin
 #=================使用docker部署======================
@@ -77,6 +75,8 @@ docker run -d -p 8080:8080 spiderman:v1
 --env MYSQL_HOST=127.0.0.1
 --env MYSQL_USER=root
 --env MYSQL_PASS=99999
+--env ADMIN_USER=perror // 创建管理员
+--env ADMIN_PASS=123456 // 管理员密码
 # 示例：
 docker run -d -p 8080:8080 --env MYSQL_PORT=3306 --env MYSQL_HOST=127.0.0.1 \
 --env MYSQL_USER=root --env MYSQL_PASS=99999 spiderman:v1

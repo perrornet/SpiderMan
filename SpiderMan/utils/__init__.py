@@ -8,6 +8,7 @@ import os
 from os.path import isdir
 from os.path import join
 from os.path import expanduser
+import hashlib
 
 HOME_PATH = expanduser('~')
 if not isdir(join(HOME_PATH, "SpiderMan")):
@@ -41,7 +42,13 @@ class _SpiderManConf(object):
         self.LOGGINGLEVEL = "DEBUG"
         self.HOST = "0.0.0.0"
         self.port = 8659
+        self.User = None
+        self.Password = None
         if "CMD" in os.environ:  # DOCKER
+            if "ADMIN_USER" in os.environ:
+                self.User = os.environ["ADMIN_USER"]
+            if "ADMIN_PASS" in os.environ:
+                self.Password = hashlib.md5(os.environ["ADMIN_PASS"].strip("").encode()).hexdigest()
             if "MYSQL_PORT" in os.environ:
                 self.MYSQLPORT = int(os.environ["MYSQL_PORT"])
             if "MYSQL_HOST" in os.environ:

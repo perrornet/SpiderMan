@@ -1,8 +1,6 @@
 """Usage:
     SpiderMan init
     SpiderMan runserver <host:port>
-    SpiderMan admin
-    
 Options:
     -h --help
     -v --version
@@ -17,19 +15,19 @@ from SpiderMan.utils import SpiderManConf
 
 log = logging.getLogger("SpiderMain")
 
+
 def main():
     arguments = docopt(__doc__, version=version())
     if arguments.get('init'):
         try:
-            create_database()
+            create_database(SpiderManConf.User, SpiderManConf.Password)
         except peewee.OperationalError:
             log.error("Please check the MySQL configuration."
-                  " MySQL cannot be connected at the moment."
-                  "configuration file location: {}".format(SpiderManConf.SPIDER_MAN_CONF_PY))
+                      " MySQL cannot be connected at the moment."
+                      "configuration file location: {}".format(SpiderManConf.SPIDER_MAN_CONF_PY))
+            log.error("adder:{}:{}".format(SpiderManConf.MYSQLHOST, SpiderManConf.MYSQLPORT))
             return
-        log.info("SpiderMan initialization completion,"
-          " you can run; SpiderMan runserver "
-          "[host:port] to open the service")
+        tornado_main()
     elif arguments.get('admin'):
         create_admin()
     elif arguments.get('runserver'):

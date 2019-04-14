@@ -20,7 +20,7 @@ def scrapyd_object(host_info, ismodels=False, timeout=10):
     return ScrapyApi(target="http://{}:{}".format(host_info.host, host_info.port), timeout=timeout)
 
 
-cache = {}
+cache = {"count": 0}
 try:
     for i in Host.select():
         cache[i.id_] = scrapyd_object(i)
@@ -34,7 +34,15 @@ async def timing():
     """A simple polling timing program
     """
     # global count
-
+    cache["count"] += 1
+    if cache["count"] >= 3:
+        for i in Host.select():
+            if i.id_ in cache:
+                if cache[i.id_].target != "http://{}:{}".format(i.host, i.port):
+                    cache[i.id_] = scrapyd_object(i)
+            else:
+                cache[i.id_] = scrapyd_object(i)
+        cache["count"] = 0
     if not cache:
         return
 

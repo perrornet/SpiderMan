@@ -5,4 +5,4 @@ WORKDIR /SpiderMan
 ADD . /SpiderMan
 EXPOSE 8080
 RUN /root/anaconda3/envs/spderman/bin/python setup.py install
-CMD ["/root/anaconda3/envs/spderman/bin/SpiderMan", "runserver", "0.0.0.0:8080"]
+CMD ["/root/anaconda3/envs/spderman/bin/SpiderMan", "init"]

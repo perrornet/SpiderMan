@@ -33,16 +33,18 @@ def input_user(msg=None):
     return username, hashlib.md5(password.encode()).hexdigest(), email
 
 
-def create_database():
+def create_database(username=None, password=None, email="xxxx@163.com"):
     """创建数据库以及表"""
     try:
         models.get_datebase('mysql').execute_sql("CREATE DATABASE {}".format('SpiderMan'))
         [models.get_datebase().execute_sql(sql) for sql in sum_sql]
         # 创建数据库表
-        username, password, email = input_user()
+        if not username or not password:
+            username, password, email = input_user()
         User.create(username=username, password=password, email=email, isadmin=True).save()
     except peewee.ProgrammingError:
         pass
+
 
 def create_admin():
     try:
