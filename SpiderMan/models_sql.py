@@ -16,7 +16,7 @@ task_table_sql = """CREATE TABLE `timing` (
 `last_time`  int(24) NOT NULL ,
 `run_time`  float(64,0) NULL ,
 PRIMARY KEY (`id`),
-  UNIQUE INDEX `task` (`host_id`) USING HASH
+INDEX `task` (`host_id`) USING BTREE
 );"""
 
 host_table_sql = """CREATE TABLE `host` (
