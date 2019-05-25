@@ -69,7 +69,7 @@ docker run -it -p 8080:8080 spiderman:v1 /bin/bash
 # sh
 /root/anaconda3/envs/spderman/bin/SpiderMan init
 # 启动
-docker run -d -p 8080:8080 spiderman:v1
+docker run -d -p 8080:8659 spiderman:v1
 # 支持从环境变量中读取配置
 --env MYSQL_PORT=3306
 --env MYSQL_HOST=127.0.0.1
@@ -77,9 +77,11 @@ docker run -d -p 8080:8080 spiderman:v1
 --env MYSQL_PASS=99999
 --env ADMIN_USER=perror // 创建管理员
 --env ADMIN_PASS=123456 // 管理员密码
+--env CMD=1 // 由于某些原因这个参数是必需的
 # 示例：
-docker run -d -p 8080:8080 --env MYSQL_PORT=3306 --env MYSQL_HOST=127.0.0.1 \
---env MYSQL_USER=root --env MYSQL_PASS=99999 spiderman:v1
+docker run -d -p 8080:8659 --env MYSQL_PORT=3306 --env MYSQL_HOST=127.0.0.1 \
+--env MYSQL_USER=root --env MYSQL_PASS=99999 --env ADMIN_USER=perror \
+--env ADMIN_PASS=123456 --env CMD=1 spiderman:v1
 # 浏览器中输入：127.0.0.1:8080
 ```
 

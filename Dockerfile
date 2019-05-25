@@ -1,8 +1,6 @@
-FROM perrorone/spiderman
-LABEL Name=spiderman Version=0.0.1
-
+FROM spiderman:latest
+RUN apk add gcc musl-dev libxslt-dev libffi-dev build-base make linux-headers openssl-dev
 WORKDIR /SpiderMan
 ADD . /SpiderMan
-EXPOSE 8080
-RUN /root/anaconda3/envs/spderman/bin/python setup.py install
-CMD ["/root/anaconda3/envs/spderman/bin/SpiderMan", "init"]
+RUN python setup.py install
+CMD ["SpiderMan", "init"]
