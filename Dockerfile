@@ -1,4 +1,4 @@
-FROM spiderman:latest
+FROM perrorone/spiderman:latest
 RUN apk add gcc musl-dev libxslt-dev libffi-dev build-base make linux-headers openssl-dev
 WORKDIR /SpiderMan
 ADD . /SpiderMan
